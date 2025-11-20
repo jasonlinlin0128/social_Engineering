@@ -72,6 +72,24 @@ app.delete('/api/clicks', (req, res) => {
   }
 });
 
+// API: 批量刪除記錄
+app.post('/api/clicks/bulk-delete', (req, res) => {
+  try {
+    const { newData } = req.body;
+
+    if (!Array.isArray(newData)) {
+      return res.status(400).json({ success: false, message: '資料格式錯誤' });
+    }
+
+    // 儲存新資料
+    fs.writeFileSync(DATA_FILE, JSON.stringify(newData, null, 2));
+    res.json({ success: true, message: '已成功刪除選中項目' });
+  } catch (error) {
+    console.error('批量刪除錯誤:', error);
+    res.status(500).json({ success: false, message: '批量刪除失敗' });
+  }
+});
+
 // API: 獲取統計資訊
 app.get('/api/stats', (req, res) => {
   try {

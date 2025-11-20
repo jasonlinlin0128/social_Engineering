@@ -18,7 +18,7 @@
     }
 
     .container {
-      max-width: 1200px;
+      max-width: 1400px;
       margin: 0 auto;
     }
 
@@ -76,6 +76,7 @@
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
+      align-items: center;
     }
 
     button {
@@ -88,12 +89,17 @@
       transition: all 0.3s;
     }
 
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
     .btn-primary {
       background: #667eea;
       color: white;
     }
 
-    .btn-primary:hover {
+    .btn-primary:hover:not(:disabled) {
       background: #5568d3;
     }
 
@@ -102,8 +108,23 @@
       color: white;
     }
 
-    .btn-danger:hover {
+    .btn-danger:hover:not(:disabled) {
       background: #c0392b;
+    }
+
+    .btn-warning {
+      background: #f39c12;
+      color: white;
+    }
+
+    .btn-warning:hover:not(:disabled) {
+      background: #e67e22;
+    }
+
+    .selection-info {
+      color: #666;
+      font-size: 14px;
+      margin-left: auto;
     }
 
     .table-container {
@@ -113,9 +134,14 @@
       overflow: hidden;
     }
 
+    .table-scroll {
+      overflow-x: auto;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
+      min-width: 900px;
     }
 
     thead {
@@ -132,6 +158,7 @@
       font-weight: 600;
       font-size: 14px;
       text-transform: uppercase;
+      white-space: nowrap;
     }
 
     tbody tr {
@@ -165,6 +192,38 @@
     .timestamp {
       color: #666;
       font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .user-agent {
+      max-width: 300px;
+      font-size: 12px;
+      color: #999;
+      word-break: break-all;
+      line-height: 1.4;
+    }
+
+    .checkbox-cell {
+      width: 50px;
+      text-align: center;
+    }
+
+    .checkbox-cell input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    .user-id {
+      max-width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 13px;
+    }
+
+    .display-name {
+      min-width: 120px;
     }
 
     @media (max-width: 768px) {
@@ -173,7 +232,11 @@
       }
 
       table {
-        min-width: 600px;
+        min-width: 900px;
+      }
+
+      .user-agent {
+        max-width: 200px;
       }
     }
   </style>
@@ -203,31 +266,40 @@
     <div class="controls">
       <button class="btn-primary" onclick="loadData()">🔄 重新整理</button>
       <button class="btn-primary" onclick="exportData()">📥 匯出 CSV</button>
+      <button class="btn-warning" id="deleteSelectedBtn" onclick="deleteSelected()" disabled>🗑️ 刪除選中項目 (<span id="selectedCount">0</span>)</button>
       <button class="btn-danger" onclick="clearData()">🗑️ 清除所有記錄</button>
+      <span class="selection-info" id="selectionInfo">未選擇任何項目</span>
     </div>
 
     <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>用戶</th>
-            <th>顯示名稱</th>
-            <th>點擊時間</th>
-            <th>User Agent</th>
-          </tr>
-        </thead>
-        <tbody id="tableBody">
-          <tr>
-            <td colspan="5" class="loading">載入中...</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th class="checkbox-cell">
+                <input type="checkbox" id="selectAll" onchange="toggleSelectAll()">
+              </th>
+              <th>#</th>
+              <th>用戶 ID</th>
+              <th>顯示名稱</th>
+              <th>點擊時間</th>
+              <th>User Agent</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <tr>
+              <td colspan="6" class="loading">載入中...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 
   <script>
     const API_URL = window.location.origin;
+    let allData = [];
+    let selectedIndices = new Set();
 
     async function loadData() {
       try {
@@ -246,13 +318,16 @@
         const clicksResult = await clicksResponse.json();
 
         if (clicksResult.success) {
-          renderTable(clicksResult.data);
+          allData = clicksResult.data;
+          selectedIndices.clear();
+          renderTable(allData);
+          updateSelectionUI();
         }
       } catch (error) {
         console.error('載入錯誤:', error);
         document.getElementById('tableBody').innerHTML = `
           <tr>
-            <td colspan="5" class="no-data">載入失敗，請稍後再試</td>
+            <td colspan="6" class="no-data">載入失敗，請稍後再試</td>
           </tr>
         `;
       }
@@ -264,24 +339,129 @@
       if (data.length === 0) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="5" class="no-data">目前沒有點擊記錄</td>
+            <td colspan="6" class="no-data">目前沒有點擊記錄</td>
           </tr>
         `;
         return;
       }
 
-      tbody.innerHTML = data.reverse().map((item, index) => `
+      const reversedData = [...data].reverse();
+      tbody.innerHTML = reversedData.map((item, index) => {
+        const originalIndex = data.length - 1 - index;
+        const isChecked = selectedIndices.has(originalIndex);
+        return `
         <tr>
-          <td>${data.length - index}</td>
+          <td class="checkbox-cell">
+            <input type="checkbox" class="row-checkbox" data-index="${originalIndex}"
+                   ${isChecked ? 'checked' : ''} onchange="toggleRowSelection(${originalIndex})">
+          </td>
+          <td>${index + 1}</td>
           <td>
             ${item.pictureUrl ? `<img src="${item.pictureUrl}" class="user-avatar" alt="avatar">` : ''}
-            <span>${item.userId}</span>
+            <div class="user-id" title="${item.userId}">${item.userId}</div>
           </td>
-          <td>${item.displayName}</td>
+          <td class="display-name">${item.displayName}</td>
           <td class="timestamp">${item.clickTime}</td>
-          <td style="font-size: 12px; color: #999;">${item.userAgent.substring(0, 50)}...</td>
+          <td><div class="user-agent" title="${item.userAgent}">${item.userAgent}</div></td>
         </tr>
-      `).join('');
+      `}).join('');
+    }
+
+    function toggleSelectAll() {
+      const selectAllCheckbox = document.getElementById('selectAll');
+      const isChecked = selectAllCheckbox.checked;
+
+      if (isChecked) {
+        // 全選
+        selectedIndices.clear();
+        for (let i = 0; i < allData.length; i++) {
+          selectedIndices.add(i);
+        }
+      } else {
+        // 取消全選
+        selectedIndices.clear();
+      }
+
+      renderTable(allData);
+      updateSelectionUI();
+    }
+
+    function toggleRowSelection(index) {
+      if (selectedIndices.has(index)) {
+        selectedIndices.delete(index);
+      } else {
+        selectedIndices.add(index);
+      }
+
+      updateSelectionUI();
+      updateSelectAllCheckbox();
+    }
+
+    function updateSelectAllCheckbox() {
+      const selectAllCheckbox = document.getElementById('selectAll');
+      if (selectedIndices.size === 0) {
+        selectAllCheckbox.checked = false;
+        selectAllCheckbox.indeterminate = false;
+      } else if (selectedIndices.size === allData.length) {
+        selectAllCheckbox.checked = true;
+        selectAllCheckbox.indeterminate = false;
+      } else {
+        selectAllCheckbox.checked = false;
+        selectAllCheckbox.indeterminate = true;
+      }
+    }
+
+    function updateSelectionUI() {
+      const count = selectedIndices.size;
+      document.getElementById('selectedCount').textContent = count;
+      document.getElementById('deleteSelectedBtn').disabled = count === 0;
+
+      if (count === 0) {
+        document.getElementById('selectionInfo').textContent = '未選擇任何項目';
+      } else {
+        document.getElementById('selectionInfo').textContent = `已選擇 ${count} 個項目`;
+      }
+
+      updateSelectAllCheckbox();
+    }
+
+    async function deleteSelected() {
+      const count = selectedIndices.size;
+      if (count === 0) {
+        alert('請先選擇要刪除的項目');
+        return;
+      }
+
+      if (!confirm(`確定要刪除選中的 ${count} 個項目嗎？此操作無法復原！`)) {
+        return;
+      }
+
+      try {
+        // 建立新的資料陣列，排除選中的項目
+        const newData = allData.filter((_, index) => !selectedIndices.has(index));
+
+        // 儲存到後端
+        const response = await fetch(`${API_URL}/api/clicks/bulk-delete`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ newData })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          alert(`已成功刪除 ${count} 個項目`);
+          selectedIndices.clear();
+          loadData();
+        } else {
+          alert('刪除失敗，請稍後再試');
+        }
+      } catch (error) {
+        console.error('刪除錯誤:', error);
+        alert('刪除失敗，請稍後再試');
+      }
     }
 
     async function clearData() {
@@ -297,6 +477,7 @@
 
         if (result.success) {
           alert('已清除所有記錄');
+          selectedIndices.clear();
           loadData();
         }
       } catch (error) {

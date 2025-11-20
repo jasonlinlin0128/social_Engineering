@@ -170,38 +170,55 @@
 
     async function initializeLiff() {
       try {
+        console.log('開始初始化 LIFF...');
+        console.log('LIFF ID:', LIFF_ID);
+        console.log('是否在 LINE 中:', liff.isInClient());
+
         await liff.init({ liffId: LIFF_ID });
+        console.log('LIFF 初始化成功');
+        console.log('登入狀態:', liff.isLoggedIn());
 
         if (!liff.isLoggedIn()) {
+          console.log('未登入，導向登入頁面');
           liff.login();
           return;
         }
 
         // 獲取用戶資料
+        console.log('正在獲取用戶資料...');
         const profile = await liff.getProfile();
+        console.log('用戶資料:', profile);
 
         // 顯示用戶資訊
         document.getElementById('loading').style.display = 'none';
         document.getElementById('userInfo').classList.add('show');
-        document.getElementById('userName').textContent = profile.displayName;
+        document.getElementById('userName').textContent = profile.displayName || '用戶';
+
         if (profile.pictureUrl) {
           document.getElementById('userAvatar').src = profile.pictureUrl;
+        } else {
+          // 如果沒有頭像，隱藏頭像元素
+          document.getElementById('userAvatar').style.display = 'none';
         }
 
         // 記錄點擊
         await trackClick(profile);
 
       } catch (error) {
-        console.error('LIFF 初始化錯誤:', error);
-        document.getElementById('loading').innerHTML = `
-          <div class="message">這是一次社交工程測試。<br>你的點擊行為已被記錄。</div>
-          <div class="error">⚠️ 無法獲取用戶資訊，但點擊已記錄</div>
-        `;
+        console.error('LIFF 錯誤詳情:', error);
+        console.error('錯誤訊息:', error.message);
+        console.error('錯誤堆疊:', error.stack);
+
+        // 顯示錯誤訊息給用戶
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('userInfo').classList.add('show');
+        document.getElementById('userAvatar').style.display = 'none';
+        document.getElementById('userName').textContent = '訪客';
 
         // 即使 LIFF 失敗，也記錄點擊
         await trackClick({
-          userId: 'unknown',
-          displayName: '未知用戶',
+          userId: 'unknown_' + Date.now(),
+          displayName: '未知用戶 (LIFF錯誤: ' + error.message + ')',
           pictureUrl: ''
         });
       }
@@ -209,15 +226,22 @@
 
     async function trackClick(profile) {
       try {
+        console.log('正在記錄點擊...');
+        console.log('發送的資料:', {
+          userId: profile.userId,
+          displayName: profile.displayName,
+          pictureUrl: profile.pictureUrl
+        });
+
         const response = await fetch(`${API_URL}/api/track`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            userId: profile.userId,
-            displayName: profile.displayName,
-            pictureUrl: profile.pictureUrl,
+            userId: profile.userId || 'unknown',
+            displayName: profile.displayName || '未知用戶',
+            pictureUrl: profile.pictureUrl || '',
             timestamp: new Date().toISOString(),
             userAgent: navigator.userAgent
           })
@@ -227,11 +251,15 @@
         console.log('追蹤結果:', result);
       } catch (error) {
         console.error('追蹤錯誤:', error);
+        // 即使追蹤失敗，也不影響頁面顯示
       }
     }
 
     // 初始化 LIFF
-    initializeLiff();
+    window.addEventListener('load', () => {
+      console.log('頁面載入完成，開始初始化');
+      initializeLiff();
+    });
   </script>
 </body>
 </html>
