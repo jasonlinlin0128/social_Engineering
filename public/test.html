@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LIFF 測試診斷頁面</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft JhengHei', sans-serif;
+      background: #f5f5f5;
+      padding: 20px;
+      font-size: 14px;
+    }
+
+    .container {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 600px;
+      margin: 0 auto;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+      font-size: 20px;
+      text-align: center;
+    }
+
+    .log-section {
+      margin-bottom: 20px;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border-left: 4px solid #667eea;
+    }
+
+    .log-section h3 {
+      font-size: 14px;
+      color: #667eea;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .log-item {
+      padding: 8px 0;
+      border-bottom: 1px solid #e9ecef;
+      font-size: 13px;
+      word-break: break-all;
+    }
+
+    .log-item:last-child {
+      border-bottom: none;
+    }
+
+    .label {
+      font-weight: 600;
+      color: #495057;
+      display: inline-block;
+      width: 120px;
+    }
+
+    .value {
+      color: #212529;
+    }
+
+    .success {
+      color: #28a745;
+      font-weight: 600;
+    }
+
+    .error {
+      color: #dc3545;
+      font-weight: 600;
+    }
+
+    .warning {
+      color: #ffc107;
+      font-weight: 600;
+    }
+
+    .info {
+      background: #d1ecf1;
+      border-left-color: #0c5460;
+      color: #0c5460;
+      padding: 12px;
+      border-radius: 5px;
+      margin-bottom: 15px;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .step {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      font-size: 12px;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    button:active {
+      background: #5568d3;
+    }
+
+    .json-display {
+      background: #263238;
+      color: #aed581;
+      padding: 12px;
+      border-radius: 5px;
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔍 LIFF 測試診斷頁面</h1>
+
+    <div class="info">
+      📱 此頁面會直接在畫面上顯示所有測試資訊，不需要查看 Console
+    </div>
+
+    <div id="debugInfo">
+      <div class="loading">⏳ 正在初始化...</div>
+    </div>
+
+    <button onclick="location.reload()">🔄 重新測試</button>
+  </div>
+
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <script>
+    const LIFF_ID = '2008536456-eRYM8pMv';
+    const API_URL = window.location.origin;
+
+    let debugLogs = [];
+
+    function addLog(section, label, value, type = 'normal') {
+      debugLogs.push({ section, label, value, type });
+      renderDebugInfo();
+    }
+
+    function renderDebugInfo() {
+      const sections = {};
+
+      debugLogs.forEach(log => {
+        if (!sections[log.section]) {
+          sections[log.section] = [];
+        }
+        sections[log.section].push(log);
+      });
+
+      let html = '';
+      for (const [sectionName, logs] of Object.entries(sections)) {
+        html += `
+          <div class="log-section">
+            <h3>${sectionName}</h3>
+        `;
+
+        logs.forEach(log => {
+          const valueClass = log.type === 'success' ? 'success' :
+                           log.type === 'error' ? 'error' :
+                           log.type === 'warning' ? 'warning' : 'value';
+
+          html += `
+            <div class="log-item">
+              <span class="label">${log.label}:</span>
+              <span class="${valueClass}">${log.value}</span>
+            </div>
+          `;
+        });
+
+        html += `</div>`;
+      }
+
+      document.getElementById('debugInfo').innerHTML = html;
+    }
+
+    async function testLiff() {
+      try {
+        // Step 1: 檢查基本資訊
+        addLog('1️⃣ 基本資訊', 'LIFF ID', LIFF_ID);
+        addLog('1️⃣ 基本資訊', 'API URL', API_URL);
+        addLog('1️⃣ 基本資訊', 'User Agent', navigator.userAgent);
+        addLog('1️⃣ 基本資訊', '當前時間', new Date().toLocaleString('zh-TW'));
+
+        // Step 2: 檢查 LIFF SDK
+        addLog('2️⃣ LIFF SDK', 'SDK 載入狀態', typeof liff !== 'undefined' ? '✅ 已載入' : '❌ 未載入', typeof liff !== 'undefined' ? 'success' : 'error');
+
+        if (typeof liff === 'undefined') {
+          addLog('2️⃣ LIFF SDK', '錯誤說明', 'LIFF SDK 未載入，請檢查網路連線', 'error');
+          return;
+        }
+
+        // Step 3: 初始化 LIFF
+        addLog('3️⃣ LIFF 初始化', '開始初始化', '正在初始化 LIFF...');
+
+        await liff.init({ liffId: LIFF_ID });
+
+        addLog('3️⃣ LIFF 初始化', '初始化結果', '✅ 成功', 'success');
+
+        // Step 4: 檢查環境
+        const isInClient = liff.isInClient();
+        addLog('4️⃣ 環境檢查', '是否在 LINE 中', isInClient ? '✅ 是' : '❌ 否', isInClient ? 'success' : 'error');
+
+        const isLoggedIn = liff.isLoggedIn();
+        addLog('4️⃣ 環境檢查', '登入狀態', isLoggedIn ? '✅ 已登入' : '❌ 未登入', isLoggedIn ? 'success' : 'warning');
+
+        if (!isInClient) {
+          addLog('4️⃣ 環境檢查', '⚠️ 警告', '請在 LINE 應用程式中開啟此連結', 'warning');
+          addLog('4️⃣ 環境檢查', '正確方式', '在 LINE 聊天室中點擊連結', 'warning');
+        }
+
+        if (!isLoggedIn) {
+          addLog('4️⃣ 環境檢查', '處理方式', '正在導向登入頁面...', 'warning');
+          setTimeout(() => {
+            liff.login();
+          }, 2000);
+          return;
+        }
+
+        // Step 5: 獲取用戶資料
+        addLog('5️⃣ 用戶資料', '狀態', '正在獲取用戶資料...');
+
+        const profile = await liff.getProfile();
+
+        addLog('5️⃣ 用戶資料', '獲取結果', '✅ 成功', 'success');
+        addLog('5️⃣ 用戶資料', 'User ID', profile.userId || '無');
+        addLog('5️⃣ 用戶資料', '顯示名稱', profile.displayName || '無');
+        addLog('5️⃣ 用戶資料', '頭像 URL', profile.pictureUrl ? '有' : '無');
+        addLog('5️⃣ 用戶資料', '狀態訊息', profile.statusMessage || '無');
+
+        // 顯示完整 JSON
+        const jsonSection = `
+          <div class="log-section">
+            <h3>📋 完整用戶資料 (JSON)</h3>
+            <div class="json-display">${JSON.stringify(profile, null, 2)}</div>
+          </div>
+        `;
+        document.getElementById('debugInfo').innerHTML += jsonSection;
+
+        // Step 6: 測試 API
+        addLog('6️⃣ API 測試', '狀態', '正在記錄點擊...');
+
+        const response = await fetch(`${API_URL}/api/track`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userId: profile.userId || 'unknown',
+            displayName: profile.displayName || '未知用戶',
+            pictureUrl: profile.pictureUrl || '',
+            timestamp: new Date().toISOString(),
+            userAgent: navigator.userAgent
+          })
+        });
+
+        const result = await response.json();
+
+        addLog('6️⃣ API 測試', 'API 回應', result.success ? '✅ 成功' : '❌ 失敗', result.success ? 'success' : 'error');
+        addLog('6️⃣ API 測試', '訊息', result.message);
+
+        // 顯示 API 回應 JSON
+        const apiJsonSection = `
+          <div class="log-section">
+            <h3>📡 API 回應 (JSON)</h3>
+            <div class="json-display">${JSON.stringify(result, null, 2)}</div>
+          </div>
+        `;
+        document.getElementById('debugInfo').innerHTML += apiJsonSection;
+
+        // Step 7: 總結
+        addLog('✅ 測試完成', '結論', '所有測試通過！LIFF 運作正常', 'success');
+        addLog('✅ 測試完成', '建議', '可以開始使用正式版本了', 'success');
+
+      } catch (error) {
+        addLog('❌ 錯誤', '錯誤類型', error.name || 'Unknown Error', 'error');
+        addLog('❌ 錯誤', '錯誤訊息', error.message || '未知錯誤', 'error');
+
+        if (error.stack) {
+          const stackSection = `
+            <div class="log-section">
+              <h3>🔴 錯誤堆疊 (Stack Trace)</h3>
+              <div class="json-display">${error.stack}</div>
+            </div>
+          `;
+          document.getElementById('debugInfo').innerHTML += stackSection;
+        }
+
+        // 根據錯誤類型給予建議
+        if (error.message.includes('LIFF ID')) {
+          addLog('💡 建議', '解決方法', '請檢查 LIFF ID 是否正確', 'warning');
+        } else if (error.message.includes('login')) {
+          addLog('💡 建議', '解決方法', '請確認在 LINE 中開啟', 'warning');
+        } else if (error.message.includes('endpoint')) {
+          addLog('💡 建議', '解決方法', '請檢查 Endpoint URL 設定', 'warning');
+        }
+      }
+    }
+
+    // 啟動測試
+    window.addEventListener('load', () => {
+      setTimeout(testLiff, 500);
+    });
+  </script>
+</body>
+</html>
