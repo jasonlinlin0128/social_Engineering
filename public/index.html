@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>重要通知</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft JhengHei', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 500px;
+      width: 100%;
+      padding: 40px;
+      text-align: center;
+      animation: slideIn 0.5s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .warning-icon {
+      font-size: 80px;
+      margin-bottom: 20px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+    }
+
+    h1 {
+      color: #e74c3c;
+      font-size: 32px;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    .message {
+      color: #333;
+      font-size: 18px;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    .user-info {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .user-info.show {
+      display: block;
+    }
+
+    .user-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin: 0 auto 15px;
+      border: 3px solid #667eea;
+    }
+
+    .user-name {
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .tips {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 15px;
+      margin-top: 20px;
+      text-align: left;
+      border-radius: 5px;
+    }
+
+    .tips h3 {
+      color: #856404;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+
+    .tips ul {
+      color: #856404;
+      padding-left: 20px;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .loading {
+      color: #666;
+      font-size: 16px;
+    }
+
+    .error {
+      color: #e74c3c;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="warning-icon">⚠️</div>
+    <h1>你被騙了！</h1>
+
+    <div class="loading" id="loading">正在載入...</div>
+
+    <div class="user-info" id="userInfo">
+      <img class="user-avatar" id="userAvatar" src="" alt="用戶頭像">
+      <div class="user-name" id="userName"></div>
+      <div class="message">
+        這是一次社交工程測試。<br>
+        你的點擊行為已被記錄。
+      </div>
+    </div>
+
+    <div class="tips">
+      <h3>🛡️ 安全提醒</h3>
+      <ul>
+        <li>不要隨意點擊來源不明的連結</li>
+        <li>注意辨識釣魚網站和詐騙訊息</li>
+        <li>在點擊連結前先確認寄件者身份</li>
+        <li>懷疑時請先詢問資訊安全部門</li>
+        <li>提高警覺，保護公司和個人資料安全</li>
+      </ul>
+    </div>
+  </div>
+
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <script>
+    // 請替換成你的 LIFF ID
+    const LIFF_ID = 'YOUR_LIFF_ID_HERE';
+    // 請替換成你的後端 API URL（部署後的網址）
+    const API_URL = window.location.origin;
+
+    async function initializeLiff() {
+      try {
+        await liff.init({ liffId: LIFF_ID });
+
+        if (!liff.isLoggedIn()) {
+          liff.login();
+          return;
+        }
+
+        // 獲取用戶資料
+        const profile = await liff.getProfile();
+
+        // 顯示用戶資訊
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('userInfo').classList.add('show');
+        document.getElementById('userName').textContent = profile.displayName;
+        if (profile.pictureUrl) {
+          document.getElementById('userAvatar').src = profile.pictureUrl;
+        }
+
+        // 記錄點擊
+        await trackClick(profile);
+
+      } catch (error) {
+        console.error('LIFF 初始化錯誤:', error);
+        document.getElementById('loading').innerHTML = `
+          <div class="message">這是一次社交工程測試。<br>你的點擊行為已被記錄。</div>
+          <div class="error">⚠️ 無法獲取用戶資訊，但點擊已記錄</div>
+        `;
+
+        // 即使 LIFF 失敗，也記錄點擊
+        await trackClick({
+          userId: 'unknown',
+          displayName: '未知用戶',
+          pictureUrl: ''
+        });
+      }
+    }
+
+    async function trackClick(profile) {
+      try {
+        const response = await fetch(`${API_URL}/api/track`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userId: profile.userId,
+            displayName: profile.displayName,
+            pictureUrl: profile.pictureUrl,
+            timestamp: new Date().toISOString(),
+            userAgent: navigator.userAgent
+          })
+        });
+
+        const result = await response.json();
+        console.log('追蹤結果:', result);
+      } catch (error) {
+        console.error('追蹤錯誤:', error);
+      }
+    }
+
+    // 初始化 LIFF
+    initializeLiff();
+  </script>
+</body>
+</html>

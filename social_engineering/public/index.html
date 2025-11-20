@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>提醒</title>
+  <style>
+    body{display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#101114;color:#fff;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans TC",sans-serif}
+    .card{max-width:640px;padding:32px;background:#1b1d24;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.35);text-align:center}
+    h1{margin:0 0 12px}
+    p{color:#c9ced6;line-height:1.6}
+  </style>
+  <meta name="color-scheme" content="dark">
+  <meta http-equiv="Cache-Control" content="no-store" />
+</head>
+<body>
+  <div class="card">
+    <h1>你被騙了</h1>
+    <p>這是公司社交工程演練。請留意可疑連結、求助訊息與附件。</p>
+  </div>
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <script>
+    ;(async function(){
+      try { window.history.replaceState({}, "", window.location.pathname); } catch (e) {}
+      try {
+        const cfgRes = await fetch('/config');
+        const cfg = await cfgRes.json();
+        if (!cfg || !cfg.liffId) return;
+        await liff.init({ liffId: cfg.liffId });
+        if (!liff.isLoggedIn()) liff.login();
+        const profile = await liff.getProfile();
+        await fetch('/track', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ lineUserId: profile.userId, lineName: profile.displayName }) });
+      } catch (e) {}
+    })();
+  </script>
+  </body>
+</html>

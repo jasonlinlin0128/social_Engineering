@@ -1,0 +1,18 @@
+{
+  "name": "social-engineering-tracker",
+  "version": "1.0.0",
+  "description": "社交工程測試追蹤系統",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": ["liff", "line", "social-engineering", "security"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "body-parser": "^1.20.2"
+  }
+}
