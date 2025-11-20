@@ -25,7 +25,7 @@
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft JhengHei', sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
       min-height: 100vh;
       display: flex;
       justify-content: center;
@@ -37,7 +37,7 @@
       background: white;
       border-radius: 20px;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-      max-width: 500px;
+      max-width: 600px;
       width: 100%;
       padding: 40px;
       text-align: center;
@@ -55,7 +55,7 @@
       }
     }
 
-    .warning-icon {
+    .shield-icon {
       font-size: 80px;
       margin-bottom: 20px;
       animation: pulse 2s infinite;
@@ -66,29 +66,70 @@
         transform: scale(1);
       }
       50% {
-        transform: scale(1.1);
+        transform: scale(1.05);
       }
     }
 
     h1 {
-      color: #e74c3c;
-      font-size: 32px;
-      margin-bottom: 20px;
+      color: #FF9800;
+      font-size: 28px;
+      margin-bottom: 15px;
       font-weight: bold;
+      line-height: 1.3;
     }
 
-    .message {
-      color: #333;
-      font-size: 18px;
+    .subtitle {
+      color: #555;
+      font-size: 16px;
       line-height: 1.6;
-      margin-bottom: 30px;
+      margin-bottom: 25px;
+      padding: 0 10px;
+    }
+
+    .safe-notice {
+      background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+      border-left: 5px solid #4caf50;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 25px;
+      text-align: left;
+    }
+
+    .safe-notice h3 {
+      color: #2e7d32;
+      font-size: 18px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .safe-notice ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .safe-notice li {
+      color: #2e7d32;
+      font-size: 15px;
+      padding: 8px 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .safe-notice li::before {
+      content: "✅";
+      flex-shrink: 0;
+      font-size: 18px;
     }
 
     .user-info {
       background: #f8f9fa;
       border-radius: 10px;
       padding: 20px;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
       display: none;
     }
 
@@ -101,7 +142,7 @@
       height: 80px;
       border-radius: 50%;
       margin: 0 auto 15px;
-      border: 3px solid #667eea;
+      border: 3px solid #FF9800;
     }
 
     .user-name {
@@ -111,26 +152,114 @@
       margin-bottom: 10px;
     }
 
-    .tips {
-      background: #fff3cd;
-      border-left: 4px solid #ffc107;
-      padding: 15px;
-      margin-top: 20px;
+    .analysis-section {
+      background: #fff3e0;
+      border-left: 5px solid #ff9800;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 25px;
       text-align: left;
-      border-radius: 5px;
+    }
+
+    .analysis-section h3 {
+      color: #e65100;
+      font-size: 18px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .danger-item {
+      background: white;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .danger-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .danger-title {
+      color: #d32f2f;
+      font-weight: bold;
+      font-size: 15px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .danger-desc {
+      color: #555;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .highlight {
+      background: #ffebee;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-weight: bold;
+      color: #c62828;
+    }
+
+    .tips {
+      background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+      border-left: 5px solid #2196f3;
+      padding: 20px;
+      margin-bottom: 25px;
+      text-align: left;
+      border-radius: 10px;
     }
 
     .tips h3 {
-      color: #856404;
-      margin-bottom: 10px;
+      color: #1565c0;
+      margin-bottom: 15px;
       font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .tips ul {
-      color: #856404;
-      padding-left: 20px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .tips li {
+      color: #1565c0;
+      padding: 8px 0;
       font-size: 14px;
-      line-height: 1.8;
+      line-height: 1.6;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .tips li::before {
+      content: "💡";
+      flex-shrink: 0;
+      font-size: 16px;
+    }
+
+    .bottom-notice {
+      background: #fce4ec;
+      border: 2px dashed #e91e63;
+      border-radius: 10px;
+      padding: 15px;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .bottom-notice p {
+      color: #880e4f;
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 0;
     }
 
     .loading {
@@ -143,41 +272,110 @@
       font-size: 14px;
       margin-top: 10px;
     }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 25px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .subtitle {
+        font-size: 15px;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="warning-icon">⚠️</div>
-    <h1>你被騙了！</h1>
+    <div class="shield-icon">🛡️</div>
+    <h1>🛑 資安演練通知：<br>好險，這只是一次演習！</h1>
+
+    <div class="subtitle">
+      剛剛您點擊了一個模擬的釣魚連結。<br>
+      如果這是真實的駭客攻擊，您的帳號密碼可能已經外洩。
+    </div>
 
     <div class="loading" id="loading">正在載入...</div>
 
     <div class="user-info" id="userInfo">
       <img class="user-avatar" id="userAvatar" src="" alt="用戶頭像">
       <div class="user-name" id="userName"></div>
-      <div class="message">
-        這是一次社交工程測試。<br>
-        你的點擊行為已被記錄。
+    </div>
+
+    <!-- 第一層：安撫情緒 -->
+    <div class="safe-notice">
+      <h3>✅ 請放心，您目前非常安全</h3>
+      <ul>
+        <li>您的電腦與手機目前非常安全</li>
+        <li>我們沒有蒐集您的任何個人資訊</li>
+        <li>這只是公司內部的資安演練</li>
+      </ul>
+    </div>
+
+    <!-- 第二層：教育重點 -->
+    <div class="analysis-section">
+      <h3>🎣 為什麼這個「普發 10 萬變 100 萬」的連結很危險？</h3>
+
+      <div class="danger-item">
+        <div class="danger-title">❌ 貪婪陷阱</div>
+        <div class="danger-desc">
+          利用 <span class="highlight">10 倍高額回報</span>（$10,000 → $100,000）誘使您失去判斷力。
+          <br>真實詐騙常用「穩賺不賠」「倍數獲利」來誘騙受害者。
+        </div>
+      </div>
+
+      <div class="danger-item">
+        <div class="danger-title">❌ 來源不明</div>
+        <div class="danger-desc">
+          連結並非來自政府官方網域（<span class="highlight">.gov.tw</span>）。
+          <br>真實的政府網站網址一定是 <strong>xxxxx.gov.tw</strong> 結尾。
+        </div>
+      </div>
+
+      <div class="danger-item">
+        <div class="danger-title">❌ 製造緊迫感</div>
+        <div class="danger-desc">
+          「<span class="highlight">今日 17:00 截止</span>」「<span class="highlight">名額僅 5,000 名</span>」營造壓力，讓您來不及思考就點擊。
+          <br>詐騙者常用時間壓力讓人失去理性判斷。
+        </div>
+      </div>
+
+      <div class="danger-item">
+        <div class="danger-title">❌ 偽裝官方</div>
+        <div class="danger-desc">
+          訊息看起來像政府公告，使用「振興專案」「經濟部」等官方用詞。
+          <br>但政府絕不會透過 <span class="highlight">LINE 連結</span> 發送這類重要通知。
+        </div>
       </div>
     </div>
 
+    <!-- 第三層：行動呼籲 -->
     <div class="tips">
-      <h3>🛡️ 安全提醒</h3>
+      <h3>🔒 下次遇到可疑連結，該怎麼做？</h3>
       <ul>
-        <li>不要隨意點擊來源不明的連結</li>
-        <li>注意辨識釣魚網站和詐騙訊息</li>
-        <li>在點擊連結前先確認寄件者身份</li>
-        <li>懷疑時請先詢問資訊安全部門</li>
-        <li>提高警覺，保護公司和個人資料安全</li>
+        <li>先暫停思考 3 秒鐘，不要急著點擊</li>
+        <li>檢查網址：政府網站一定是 .gov.tw 結尾</li>
+        <li>太好康的優惠（倍數獲利）要提高警覺</li>
+        <li>有疑問先到官方網站查證，不要點擊連結</li>
+        <li>回報可疑訊息給 IT 部門或主管</li>
       </ul>
+    </div>
+
+    <div class="bottom-notice">
+      <p>
+        📢 請不要在群組討論這次演練，<br>
+        讓其他同事也有機會進行自我檢測。<br>
+        謝謝您的配合！
+      </p>
     </div>
   </div>
 
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   <script>
-    // 請替換成你的 LIFF ID
     const LIFF_ID = '2008536456-eRYM8pMv';
-    // 請替換成你的後端 API URL（部署後的網址）
     const API_URL = window.location.origin;
 
     async function initializeLiff() {
@@ -209,7 +407,6 @@
         if (profile.pictureUrl) {
           document.getElementById('userAvatar').src = profile.pictureUrl;
         } else {
-          // 如果沒有頭像，隱藏頭像元素
           document.getElementById('userAvatar').style.display = 'none';
         }
 
