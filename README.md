@@ -6,8 +6,10 @@
 
 - ✅ 使用 LIFF 獲取 LINE 用戶資訊
 - ✅ 即時追蹤點擊記錄
+- ✅ **MongoDB 資料庫永久保存資料**（不會因重新部署而遺失）
 - ✅ 精美的警告頁面
 - ✅ 管理後台查看統計
+- ✅ 批量刪除點擊記錄
 - ✅ 匯出 CSV 報告
 - ✅ 響應式設計
 
@@ -59,7 +61,23 @@
 2. 在專案目錄執行：`vercel`
 3. 按照指示完成部署
 
-### 3. 更新 LIFF 設定
+### 3. 設定 MongoDB Atlas 資料庫（重要！）
+
+**為什麼需要資料庫？**
+- 使用檔案系統儲存資料，每次重新部署都會清空
+- MongoDB Atlas 免費方案可永久保存資料
+
+**詳細設定步驟請參閱：[MONGODB_SETUP.md](./MONGODB_SETUP.md)**
+
+快速步驟：
+1. 註冊 [MongoDB Atlas](https://www.mongodb.com/cloud/atlas/register)（免費）
+2. 建立免費 M0 集群
+3. 建立資料庫使用者和密碼
+4. 設定網路存取（Allow Access from Anywhere）
+5. 取得連線字串
+6. 在 Render 的 Environment 設定環境變數 `MONGODB_URI`
+
+### 4. 更新 LIFF 設定
 
 1. 回到 LINE Developers Console
 2. 找到你剛才建立的 LIFF app
@@ -68,7 +86,7 @@
    - `https://social-engineering-tracker.onrender.com/index.html`
 5. 儲存變更
 
-### 4. 更新程式碼中的 LIFF ID
+### 5. 更新程式碼中的 LIFF ID
 
 1. 開啟 `public/index.html`
 2. 找到第 107 行：
@@ -78,7 +96,7 @@
 3. 將 `YOUR_LIFF_ID_HERE` 替換成你的 LIFF ID
 4. 重新部署（如果使用 Git 部署，commit 並 push 即可自動部署）
 
-### 5. 開始測試
+### 6. 開始測試
 
 1. 開啟你的 LIFF URL，例如：
    - `https://liff.line.me/你的LIFF_ID`
@@ -113,13 +131,22 @@ npm start
 
 ## 資料說明
 
-- 所有點擊記錄儲存在 `clicks.json` 檔案中
+- 所有點擊記錄儲存在 **MongoDB Atlas 雲端資料庫**
+- **資料永久保存**，不會因重新部署或伺服器重啟而遺失
 - 包含以下資訊：
   - LINE 用戶 ID
   - 顯示名稱
   - 頭像 URL
   - 點擊時間
   - User Agent
+  - 建立時間（自動記錄）
+
+### 資料庫優勢
+
+✅ **永久保存** - 資料不會因重新部署而清空
+✅ **免費使用** - MongoDB Atlas M0 方案永久免費
+✅ **高可靠性** - 雲端備份，不怕資料遺失
+✅ **易於管理** - 可透過 MongoDB Atlas 網頁介面查看資料
 
 ## 安全注意事項
 

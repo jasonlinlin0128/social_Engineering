@@ -1,8 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const fs = require('fs');
-const path = require('path');
+const mongoose = require('mongoose');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,36 +11,66 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
-// 資料儲存檔案
-const DATA_FILE = path.join(__dirname, 'clicks.json');
+// MongoDB 連線
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/social-engineering';
 
-// 初始化資料檔案
-if (!fs.existsSync(DATA_FILE)) {
-  fs.writeFileSync(DATA_FILE, JSON.stringify([], null, 2));
-}
+mongoose.connect(MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log('✅ MongoDB 連線成功'))
+.catch(err => console.error('❌ MongoDB 連線失敗:', err));
+
+// 定義 Click Schema
+const clickSchema = new mongoose.Schema({
+  userId: {
+    type: String,
+    default: 'Unknown'
+  },
+  displayName: {
+    type: String,
+    default: '未知用戶'
+  },
+  pictureUrl: {
+    type: String,
+    default: ''
+  },
+  timestamp: {
+    type: Date,
+    default: Date.now
+  },
+  userAgent: {
+    type: String,
+    default: ''
+  },
+  clickTime: {
+    type: String,
+    default: () => new Date().toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' })
+  }
+}, {
+  timestamps: true // 自動加入 createdAt 和 updatedAt
+});
+
+// 建立 Model
+const Click = mongoose.model('Click', clickSchema);
 
 // API: 記錄點擊
-app.post('/api/track', (req, res) => {
+app.post('/api/track', async (req, res) => {
   try {
     const { userId, displayName, pictureUrl, timestamp, userAgent } = req.body;
 
-    // 讀取現有資料
-    const data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
-
-    // 新增點擊記錄
-    const clickRecord = {
+    // 建立點擊記錄
+    const clickRecord = new Click({
       userId: userId || 'Unknown',
       displayName: displayName || '未知用戶',
       pictureUrl: pictureUrl || '',
-      timestamp: timestamp || new Date().toISOString(),
+      timestamp: timestamp || new Date(),
       userAgent: userAgent || '',
       clickTime: new Date().toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' })
-    };
+    });
 
-    data.push(clickRecord);
-
-    // 儲存資料
-    fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
+    // 儲存到資料庫
+    await clickRecord.save();
 
     res.json({ success: true, message: '記錄成功' });
   } catch (error) {
@@ -51,9 +80,10 @@ app.post('/api/track', (req, res) => {
 });
 
 // API: 獲取所有點擊記錄
-app.get('/api/clicks', (req, res) => {
+app.get('/api/clicks', async (req, res) => {
   try {
-    const data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+    // 從資料庫讀取所有記錄，依時間排序
+    const data = await Click.find().sort({ timestamp: 1 });
     res.json({ success: true, data });
   } catch (error) {
     console.error('讀取錯誤:', error);
@@ -62,9 +92,10 @@ app.get('/api/clicks', (req, res) => {
 });
 
 // API: 清除所有記錄
-app.delete('/api/clicks', (req, res) => {
+app.delete('/api/clicks', async (req, res) => {
   try {
-    fs.writeFileSync(DATA_FILE, JSON.stringify([], null, 2));
+    // 刪除所有記錄
+    await Click.deleteMany({});
     res.json({ success: true, message: '已清除所有記錄' });
   } catch (error) {
     console.error('清除錯誤:', error);
@@ -73,16 +104,17 @@ app.delete('/api/clicks', (req, res) => {
 });
 
 // API: 批量刪除記錄
-app.post('/api/clicks/bulk-delete', (req, res) => {
+app.post('/api/clicks/bulk-delete', async (req, res) => {
   try {
-    const { newData } = req.body;
+    const { deleteIds } = req.body;
 
-    if (!Array.isArray(newData)) {
+    if (!Array.isArray(deleteIds)) {
       return res.status(400).json({ success: false, message: '資料格式錯誤' });
     }
 
-    // 儲存新資料
-    fs.writeFileSync(DATA_FILE, JSON.stringify(newData, null, 2));
+    // 根據 ID 批量刪除
+    await Click.deleteMany({ _id: { $in: deleteIds } });
+
     res.json({ success: true, message: '已成功刪除選中項目' });
   } catch (error) {
     console.error('批量刪除錯誤:', error);
@@ -91,14 +123,18 @@ app.post('/api/clicks/bulk-delete', (req, res) => {
 });
 
 // API: 獲取統計資訊
-app.get('/api/stats', (req, res) => {
+app.get('/api/stats', async (req, res) => {
   try {
-    const data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+    const totalClicks = await Click.countDocuments();
+    const uniqueUsers = await Click.distinct('userId');
+    const lastClickDoc = await Click.findOne().sort({ timestamp: -1 });
+
     const stats = {
-      totalClicks: data.length,
-      uniqueUsers: new Set(data.map(d => d.userId)).size,
-      lastClick: data.length > 0 ? data[data.length - 1].clickTime : null
+      totalClicks,
+      uniqueUsers: uniqueUsers.length,
+      lastClick: lastClickDoc ? lastClickDoc.clickTime : null
     };
+
     res.json({ success: true, stats });
   } catch (error) {
     console.error('統計錯誤:', error);

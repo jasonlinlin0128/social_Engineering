@@ -437,16 +437,21 @@
       }
 
       try {
-        // 建立新的資料陣列，排除選中的項目
-        const newData = allData.filter((_, index) => !selectedIndices.has(index));
+        // 收集要刪除的項目的 ID
+        const deleteIds = [];
+        selectedIndices.forEach(index => {
+          if (allData[index] && allData[index]._id) {
+            deleteIds.push(allData[index]._id);
+          }
+        });
 
-        // 儲存到後端
+        // 傳送到後端
         const response = await fetch(`${API_URL}/api/clicks/bulk-delete`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ newData })
+          body: JSON.stringify({ deleteIds })
         });
 
         const result = await response.json();
