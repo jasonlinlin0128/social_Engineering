@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
+const { neon } = require("@neondatabase/serverless");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -11,75 +11,44 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static("public"));
 
-// MongoDB 連線
-const MONGODB_URI =
-  process.env.MONGODB_URI || "mongodb://localhost:27017/social-engineering";
+// Neon Postgres：Vercel「Storage → Neon」一鍵整合會自動設好 DATABASE_URL
+const connectionString = process.env.DATABASE_URL || process.env.POSTGRES_URL;
+const sql = connectionString ? neon(connectionString) : null;
 
-mongoose
-  .connect(MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("✅ MongoDB 連線成功"))
-  .catch((err) => console.error("❌ MongoDB 連線失敗:", err));
+// 確保資料表存在（每個 instance 冷啟動只跑一次）
+let schemaReady;
+function ensureSchema() {
+  if (!sql)
+    throw new Error(
+      "DATABASE_URL 未設定（請在 Vercel Storage 連結 Neon 資料庫）",
+    );
+  schemaReady ??= sql`
+    CREATE TABLE IF NOT EXISTS clicks (
+      id           SERIAL PRIMARY KEY,
+      user_id      TEXT NOT NULL DEFAULT 'Unknown',
+      display_name TEXT NOT NULL DEFAULT '未知用戶',
+      picture_url  TEXT NOT NULL DEFAULT '',
+      user_agent   TEXT NOT NULL DEFAULT '',
+      click_time   TEXT NOT NULL DEFAULT '',
+      created_at   TIMESTAMPTZ NOT NULL DEFAULT now()
+    )
+  `;
+  return schemaReady;
+}
 
-// 定義 Click Schema
-const clickSchema = new mongoose.Schema(
-  {
-    userId: {
-      type: String,
-      default: "Unknown",
-    },
-    displayName: {
-      type: String,
-      default: "未知用戶",
-    },
-    pictureUrl: {
-      type: String,
-      default: "",
-    },
-    timestamp: {
-      type: Date,
-      default: Date.now,
-    },
-    userAgent: {
-      type: String,
-      default: "",
-    },
-    clickTime: {
-      type: String,
-      default: () =>
-        new Date().toLocaleString("zh-TW", { timeZone: "Asia/Taipei" }),
-    },
-  },
-  {
-    timestamps: true, // 自動加入 createdAt 和 updatedAt
-  },
-);
-
-// 建立 Model
-const Click = mongoose.model("Click", clickSchema);
+function taipeiNow() {
+  return new Date().toLocaleString("zh-TW", { timeZone: "Asia/Taipei" });
+}
 
 // API: 記錄點擊
 app.post("/api/track", async (req, res) => {
   try {
-    const { userId, displayName, pictureUrl, timestamp, userAgent } = req.body;
-
-    // 建立點擊記錄
-    const clickRecord = new Click({
-      userId: userId || "Unknown",
-      displayName: displayName || "未知用戶",
-      pictureUrl: pictureUrl || "",
-      timestamp: timestamp || new Date(),
-      userAgent: userAgent || "",
-      clickTime: new Date().toLocaleString("zh-TW", {
-        timeZone: "Asia/Taipei",
-      }),
-    });
-
-    // 儲存到資料庫
-    await clickRecord.save();
-
+    await ensureSchema();
+    const { userId, displayName, pictureUrl, userAgent } = req.body;
+    await sql`
+      INSERT INTO clicks (user_id, display_name, picture_url, user_agent, click_time)
+      VALUES (${userId || "Unknown"}, ${displayName || "未知用戶"}, ${pictureUrl || ""}, ${userAgent || ""}, ${taipeiNow()})
+    `;
     res.json({ success: true, message: "記錄成功" });
   } catch (error) {
     console.error("記錄錯誤:", error);
@@ -87,11 +56,17 @@ app.post("/api/track", async (req, res) => {
   }
 });
 
-// API: 獲取所有點擊記錄
+// API: 獲取所有點擊記錄（欄位別名對齊前端，admin.html 不用改）
 app.get("/api/clicks", async (req, res) => {
   try {
-    // 從資料庫讀取所有記錄，依時間排序
-    const data = await Click.find().sort({ timestamp: 1 });
+    await ensureSchema();
+    const data = await sql`
+      SELECT id AS "_id", user_id AS "userId", display_name AS "displayName",
+             picture_url AS "pictureUrl", user_agent AS "userAgent",
+             click_time AS "clickTime", created_at AS "createdAt"
+      FROM clicks
+      ORDER BY created_at ASC
+    `;
     res.json({ success: true, data });
   } catch (error) {
     console.error("讀取錯誤:", error);
@@ -102,8 +77,8 @@ app.get("/api/clicks", async (req, res) => {
 // API: 清除所有記錄
 app.delete("/api/clicks", async (req, res) => {
   try {
-    // 刪除所有記錄
-    await Click.deleteMany({});
+    await ensureSchema();
+    await sql`DELETE FROM clicks`;
     res.json({ success: true, message: "已清除所有記錄" });
   } catch (error) {
     console.error("清除錯誤:", error);
@@ -114,15 +89,15 @@ app.delete("/api/clicks", async (req, res) => {
 // API: 批量刪除記錄
 app.post("/api/clicks/bulk-delete", async (req, res) => {
   try {
+    await ensureSchema();
     const { deleteIds } = req.body;
-
     if (!Array.isArray(deleteIds)) {
       return res.status(400).json({ success: false, message: "資料格式錯誤" });
     }
-
-    // 根據 ID 批量刪除
-    await Click.deleteMany({ _id: { $in: deleteIds } });
-
+    const ids = deleteIds.map(Number).filter(Number.isInteger);
+    if (ids.length) {
+      await sql`DELETE FROM clicks WHERE id = ANY(${ids}::int[])`;
+    }
     res.json({ success: true, message: "已成功刪除選中項目" });
   } catch (error) {
     console.error("批量刪除錯誤:", error);
@@ -133,24 +108,30 @@ app.post("/api/clicks/bulk-delete", async (req, res) => {
 // API: 獲取統計資訊
 app.get("/api/stats", async (req, res) => {
   try {
-    const totalClicks = await Click.countDocuments();
-    const uniqueUsers = await Click.distinct("userId");
-    const lastClickDoc = await Click.findOne().sort({ timestamp: -1 });
-
-    const stats = {
-      totalClicks,
-      uniqueUsers: uniqueUsers.length,
-      lastClick: lastClickDoc ? lastClickDoc.clickTime : null,
-    };
-
-    res.json({ success: true, stats });
+    await ensureSchema();
+    const rows = await sql`
+      SELECT
+        COUNT(*)::int AS total,
+        COUNT(DISTINCT user_id)::int AS unique_users,
+        (SELECT click_time FROM clicks ORDER BY created_at DESC LIMIT 1) AS last_click
+      FROM clicks
+    `;
+    const r = rows[0] || {};
+    res.json({
+      success: true,
+      stats: {
+        totalClicks: r.total || 0,
+        uniqueUsers: r.unique_users || 0,
+        lastClick: r.last_click || null,
+      },
+    });
   } catch (error) {
     console.error("統計錯誤:", error);
     res.status(500).json({ success: false, message: "統計失敗" });
   }
 });
 
-// 本機 / Render 直接執行才 listen；Vercel（serverless）會 import 這個 app
+// 本機 / 直接執行才 listen；Vercel（serverless）會 import 這個 app
 if (require.main === module) {
   app.listen(PORT, () => {
     console.log(`伺服器運行在 http://localhost:${PORT}`);
