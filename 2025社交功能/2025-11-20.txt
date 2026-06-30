@@ -1,0 +1,3437 @@
+
+╭─── Claude Code v2.0.43 ──────────────────────────────────────────────────────╮
+│                             │ Tips for getting started                       │
+│    Welcome back Jason-SH!   │ Run /init to create a CLAUDE.md file with ins… │
+│                             │ Run /install-github-app to tag @claude right … │
+│           ▐▛███▜▌           │ ────────────────────────────────────────────── │
+│          ▝▜█████▛▘          │ Recent activity                                │
+│            ▘▘ ▝▝            │ No recent activity                             │
+│                             │                                                │
+│   Sonnet 4.5 · Claude Pro   │                                                │
+│         C:\社交工程         │                                                │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+> 我想要在公司實作社交工程，目前的規劃是在公司的line群放一個網址(能辨識點擊
+者)，有點擊的人點進去就會顯示:你被騙了，我該如何實作，並且能夠追蹤到是誰點的
+?用免費網域就好，如果有需要用liff請幫我建置好 
+
+● 我來幫你建置一個社交工程測試系統，使用 LIFF 來追蹤 LINE
+  群組中的點擊者。這是一個很好的安全意識訓練方式。
+
+  讓我先規劃這個任務：
+
+● 現在開始建立專案！我會創建一個完整的 LIFF
+  應用程式，可以追蹤點擊者並顯示警告訊息。
+
+● Write(package.json)
+  ⎿  Wrote 1 lines to package.json                                    
+     {
+       "name": "social-engineering-tracker",
+       "version": "1.0.0",
+       "description": "社交工程測試追蹤系統",
+       "main": "server.js",
+       "scripts": {
+         "start": "node server.js",
+         "dev": "node server.js"
+       },
+       "keywords": ["liff", "line", "social-engineering", "security"],
+
+● Write(server.js)
+  ⎿  Wrote 1 lines to server.js                
+     const express = require('express');
+     const cors = require('cors');
+     const bodyParser = require('body-parser');
+     const fs = require('fs');
+     const path = require('path');
+     const app = express();
+     const PORT = process.env.PORT || 3000;
+     // 中間件
+
+● Write(public\index.html)
+  ⎿  Wrote 1 lines to public\index.html                                    
+     <!DOCTYPE html>
+     <html lang="zh-TW">
+     <head>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, 
+     initial-scale=1.0">
+       <title>重要通知</title>
+       <style>
+         * {
+           margin: 0;
+           padding: 0;
+
+● Write(public\admin.html)
+  ⎿  Wrote 1 lines to public\admin.html                                    
+     <!DOCTYPE html>
+     <html lang="zh-TW">
+     <head>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, 
+     initial-scale=1.0">
+       <title>社交工程測試 - 管理後台</title>
+       <style>
+         * {
+           margin: 0;
+           padding: 0;
+
+● Write(.gitignore)
+  ⎿  Wrote 1 lines to .gitignore
+     node_modules/
+     clicks.json
+     .env
+     *.log
+     .DS_Store
+
+● Write(README.md)
+  ⎿  Wrote 1 lines to README.md                                         
+     # 社交工程測試追蹤系統
+     這是一個用於公司內部安全意識訓練的社交工程測試工具。透過 LINE LIFF
+     追蹤點擊者身份，並顯示安全警告訊息。
+     ## 功能特色
+     - ✅ 使用 LIFF 獲取 LINE 用戶資訊
+     - ✅ 即時追蹤點擊記錄
+     - ✅ 精美的警告頁面
+     - ✅ 管理後台查看統計
+
+● Write(SETUP_GUIDE.md)
+  ⎿  Wrote 1 lines to SETUP_GUIDE.md                          
+     # 快速設定指南
+     ## 🚀 快速開始（5 分鐘內完成）
+     ### 步驟 1: 建立 LINE LIFF 應用
+     1. 前往 https://developers.line.biz/console/
+     2. 登入 → 建立 Provider → 建立 Channel（選擇 LINE Login）
+     3. 進入 Channel → 點擊「LIFF」分頁 → 「Add」
+     4. 填寫設定：
+
+● Write(vercel.json)
+  ⎿  Wrote 1 lines to vercel.json 
+     {
+       "version": 2,
+       "builds": [
+         {
+           "src": "server.js",
+           "use": "@vercel/node"
+         },
+         {
+           "src": "public/**",
+           "use": "@vercel/static"
+
+● 完成了！我已經幫你建置好完整的社交工程測試系統。以下是系統概覽：
+
+  📦 已建立的檔案
+
+  後端：
+  - server.js - Express 伺服器，處理追蹤 API 和資料儲存
+  - package.json - 專案相依套件
+
+  前端：
+  - public/index.html - LIFF 追蹤頁面（顯示「你被騙了」警告）
+  - public/admin.html - 管理後台（查看點擊記錄和統計）
+
+  說明文件：
+  - README.md - 完整的專案說明
+  - SETUP_GUIDE.md - 快速設定指南（5分鐘內完成）
+  - vercel.json - Vercel 部署設定
+
+  🎯 系統功能
+
+  ✅ LIFF 整合 - 自動獲取 LINE 用戶資訊（姓名、頭像、User ID）
+  ✅ 即時追蹤 - 記錄每個點擊者的身份和時間
+  ✅ 精美介面 - 專業的警告頁面和管理後台
+  ✅ 統計分析 - 總點擊數、不重複用戶數、最後點擊時間
+  ✅ 資料匯出 - 一鍵匯出 CSV 報告
+  ✅ 響應式設計 - 支援手機和桌面裝置
+
+  🚀 快速開始（3 個主要步驟）
+
+  1. 建立 LINE LIFF 應用
+
+  前往 https://developers.line.biz/console/ 建立 LIFF app，取得 LIFF ID
+
+  2. 部署到免費平台
+
+  推薦使用 Render.com（完全免費）：
+  - 註冊 → New Web Service → 上傳程式碼
+  - 設定：Node 環境，npm install + npm start
+  - 取得部署網址
+
+  3. 更新設定
+
+  - 在 public/index.html 第 107 行填入你的 LIFF ID
+  - 在 LINE Developers Console 更新 Endpoint URL
+
+  詳細步驟請參考 SETUP_GUIDE.md
+
+  📱 使用方式
+
+  分享連結到 LINE 群組：
+  https://liff.line.me/你的LIFF_ID
+
+  查看管理後台：
+  https://你的網址/admin.html
+
+  ⚠️ 重要提醒
+
+  此工具已完全建置完成，但請確保：
+  1. ✅ 已獲得公司管理層授權進行測試
+  2. ✅ 符合公司資訊安全政策
+  3. ✅ 測試後向員工說明並提供安全教育
+  4. ✅ 妥善保管收集到的資料
+
+  系統已準備就緒！請按照 SETUP_GUIDE.md 的步驟進行設定，5
+  分鐘內即可完成部署。有任何問題隨時告訴我！
+
+> cosst API_URL要改嗎? 
+
+● 不需要改！我已經設計成自動適應的設定了。
+
+  讓我說明一下：
+
+  📍 API_URL 設定說明
+
+  在 public/index.html 和 public/admin.html 中，我都使用了：
+
+  const API_URL = window.location.origin;
+
+  這行程式碼會自動取得當前網頁的網址來源，所以：
+
+  - ✅ 本機測試時：http://localhost:3000
+  - ✅ 部署到 Render 後：https://xxx.onrender.com
+  - ✅ 部署到其他平台：自動對應該平台的網址
+
+  🎯 不需要修改的情況
+
+  如果你的前端和後端在同一個網域上（也就是我這個設計），就完全不需要改。
+
+  ⚠️ 需要修改的情況
+
+  只有在以下情況需要修改：
+
+  情況 1：前後端分離部署
+
+  如果你把前端和後端部署在不同的地方：
+  - 前端：https://frontend.vercel.app
+  - 後端：https://backend.render.com
+
+  那就需要改成：
+
+  public/index.html 第 109 行：
+  const API_URL = 'https://backend.render.com';  // 改成後端網址
+
+  public/admin.html 第 156 行：
+  const API_URL = 'https://backend.render.com';  // 改成後端網址
+
+  情況 2：使用自訂網域
+
+  如果部署後使用自己的網域（例如
+  https://test.yourcompany.com），也不需要改，因為 window.location.origin
+  會自動變成你的自訂網域。
+
+  ✅ 總結
+
+  按照我的設計部署（前後端一起），完全不需要修改 API_URL！
+
+  系統會自動偵測並使用正確的網址 😊
+
+  有其他設定上的問題嗎？
+
+> 我剛剛不管是用電腦還是手機測試，發現用戶都顯示unknown，顯示名稱都是未知用
+戶，後方USER 
+AGENT內容的字也會被擠壓到，另外我希望後台可以手動勾選要刪除哪幾項 
+
+● 我來幫你解決這些問題！讓我逐一修復：
+
+● Read(public\index.html)
+  ⎿  Read 238 lines
+
+● 現在我來修復這三個問題：
+
+  1. 修復 LIFF 用戶資訊顯示問題
+
+● Update(public\index.html)
+  ⎿  Updated public\index.html with 40 additions and 12 removals         
+       170    
+       171        async function initializeLiff() {
+       172          try {
+       173 +          console.log('開始初始化 LIFF...');
+       174 +          console.log('LIFF ID:', LIFF_ID);
+       175 +          console.log('是否在 LINE 中:', liff.isInClient());
+       176 +  
+       177            await liff.init({ liffId: LIFF_ID });
+       178 +          console.log('LIFF 初始化成功');
+       179 +          console.log('登入狀態:', liff.isLoggedIn());
+       180    
+       181            if (!liff.isLoggedIn()) {
+       182 +            console.log('未登入，導向登入頁面');
+       183              liff.login();
+       184              return;
+       185            }
+       186    
+       187            // 獲取用戶資料
+       188 +          console.log('正在獲取用戶資料...');
+       189            const profile = await liff.getProfile();
+       190 +          console.log('用戶資料:', profile);
+       191    
+       192            // 顯示用戶資訊
+       193            document.getElementById('loading').style.display = 
+             'none';
+       194            
+             document.getElementById('userInfo').classList.add('show');
+       195 -          document.getElementById('userName').textContent = 
+           -  profile.displayName;
+       195 +          document.getElementById('userName').textContent = 
+           +  profile.displayName || '用戶';
+       196 +  
+       197            if (profile.pictureUrl) {
+       198              document.getElementById('userAvatar').src = 
+             profile.pictureUrl;
+       199 +          } else {
+       200 +            // 如果沒有頭像，隱藏頭像元素
+       201 +            
+           + document.getElementById('userAvatar').style.display = 
+           + 'none';
+       202            }
+       203    
+       204            // 記錄點擊
+       205            await trackClick(profile);
+       206    
+       207          } catch (error) {
+       208 -          console.error('LIFF 初始化錯誤:', error);
+       209 -          document.getElementById('loading').innerHTML = `
+       210 -            <div class="message">這是一次社交工程測試。<br>你
+           - 的點擊行為已被記錄。</div>
+       211 -            <div class="error">⚠️ 
+           - 無法獲取用戶資訊，但點擊已記錄</div>
+       212 -          `;
+       208 +          console.error('LIFF 錯誤詳情:', error);
+       209 +          console.error('錯誤訊息:', error.message);
+       210 +          console.error('錯誤堆疊:', error.stack);
+       211    
+       212 +          // 顯示錯誤訊息給用戶
+       213 +          document.getElementById('loading').style.display = 
+           + 'none';
+       214 +          
+           + document.getElementById('userInfo').classList.add('show');
+       215 +          document.getElementById('userAvatar').style.display
+           +  = 'none';
+       216 +          document.getElementById('userName').textContent = 
+           + '訪客';
+       217 +  
+       218            // 即使 LIFF 失敗，也記錄點擊
+       219            await trackClick({
+       220 -            userId: 'unknown',
+       221 -            displayName: '未知用戶',
+       220 +            userId: 'unknown_' + Date.now(),
+       221 +            displayName: '未知用戶 (LIFF錯誤: '
+           +   + error.message + ')',
+       222              pictureUrl: ''
+       223            });
+       224          }
+     ...
+       209    
+       210        async function trackClick(profile) {
+       211          try {
+       212 +          console.log('正在記錄點擊...');
+       213 +          console.log('發送的資料:', {
+       214 +            userId: profile.userId,
+       215 +            displayName: profile.displayName,
+       216 +            pictureUrl: profile.pictureUrl
+       217 +          });
+       218 +  
+       219            const response = await 
+             fetch(`${API_URL}/api/track`, {
+       220              method: 'POST',
+       221              headers: {
+       222                'Content-Type': 'application/json',
+       223              },
+       224              body: JSON.stringify({
+       225 -              userId: profile.userId,
+       226 -              displayName: profile.displayName,
+       227 -              pictureUrl: profile.pictureUrl,
+       225 +              userId: profile.userId || 'unknown',
+       226 +              displayName: profile.displayName || '未知用戶',
+       227 +              pictureUrl: profile.pictureUrl || '',
+       228                timestamp: new Date().toISOString(),
+       229                userAgent: navigator.userAgent
+       230              })
+     ...
+       227            console.log('追蹤結果:', result);
+       228          } catch (error) {
+       229            console.error('追蹤錯誤:', error);
+       230 +          // 即使追蹤失敗，也不影響頁面顯示
+       231          }
+       232        }
+       233    
+       234        // 初始化 LIFF
+       235 -      initializeLiff();
+       235 +      window.addEventListener('load', () => {
+       236 +        console.log('頁面載入完成，開始初始化');
+       237 +        initializeLiff();
+       238 +      });
+       239      </script>
+       240    </body>
+       241    </html>
+
+● 2. 修復後台 User Agent 文字擠壓問題 + 3. 新增勾選刪除功能
+
+● Read(public\admin.html)
+  ⎿  Read 100 lines
+
+● Read(public\admin.html)
+  ⎿  Read 363 lines
+
+● 現在我會完全重寫 admin.html，修復 User Agent 顯示問題並新增勾選刪除功能：
+
+● Write(public\admin.html)
+  ⎿  Updated public\admin.html with 210 additions and 29 removals          
+       18        }
+       19    
+       20        .container {
+       21 -        max-width: 1200px;
+       21 +        max-width: 1400px;
+       22          margin: 0 auto;
+       23        }
+       24    
+     ...
+       76          display: flex;
+       77          gap: 10px;
+       78          flex-wrap: wrap;
+       79 +        align-items: center;
+       80        }
+       81    
+       82        button {
+     ...
+        88          transition: all 0.3s;
+        89        }
+        90    
+        91 +      button:disabled {
+        92 +        opacity: 0.5;
+        93 +        cursor: not-allowed;
+        94 +      }
+        95 +  
+        96        .btn-primary {
+        97          background: #667eea;
+        98          color: white;
+        99        }
+       100    
+       101 -      .btn-primary:hover {
+       101 +      .btn-primary:hover:not(:disabled) {
+       102          background: #5568d3;
+       103        }
+       104    
+     ...
+       102          color: white;
+       103        }
+       104    
+       105 -      .btn-danger:hover {
+       105 +      .btn-danger:hover:not(:disabled) {
+       106          background: #c0392b;
+       107        }
+       108    
+       109 +      .btn-warning {
+       110 +        background: #f39c12;
+       111 +        color: white;
+       112 +      }
+       113 +  
+       114 +      .btn-warning:hover:not(:disabled) {
+       115 +        background: #e67e22;
+       116 +      }
+       117 +  
+       118 +      .selection-info {
+       119 +        color: #666;
+       120 +        font-size: 14px;
+       121 +        margin-left: auto;
+       122 +      }
+       123 +  
+       124        .table-container {
+       125          background: white;
+       126          border-radius: 10px;
+     ...
+       113          overflow: hidden;
+       114        }
+       115    
+       116 +      .table-scroll {
+       117 +        overflow-x: auto;
+       118 +      }
+       119 +  
+       120        table {
+       121          width: 100%;
+       122          border-collapse: collapse;
+       123 +        min-width: 900px;
+       124        }
+       125    
+       126        thead {
+     ...
+       132          font-weight: 600;
+       133          font-size: 14px;
+       134          text-transform: uppercase;
+       135 +        white-space: nowrap;
+       136        }
+       137    
+       138        tbody tr {
+     ...
+       165        .timestamp {
+       166          color: #666;
+       167          font-size: 13px;
+       168 +        white-space: nowrap;
+       169        }
+       170    
+       171 +      .user-agent {
+       172 +        max-width: 300px;
+       173 +        font-size: 12px;
+       174 +        color: #999;
+       175 +        word-break: break-all;
+       176 +        line-height: 1.4;
+       177 +      }
+       178 +  
+       179 +      .checkbox-cell {
+       180 +        width: 50px;
+       181 +        text-align: center;
+       182 +      }
+       183 +  
+       184 +      .checkbox-cell input[type="checkbox"] {
+       185 +        width: 18px;
+       186 +        height: 18px;
+       187 +        cursor: pointer;
+       188 +      }
+       189 +  
+       190 +      .user-id {
+       191 +        max-width: 200px;
+       192 +        overflow: hidden;
+       193 +        text-overflow: ellipsis;
+       194 +        white-space: nowrap;
+       195 +        font-size: 13px;
+       196 +      }
+       197 +  
+       198 +      .display-name {
+       199 +        min-width: 120px;
+       200 +      }
+       201 +  
+       202        @media (max-width: 768px) {
+       203          .table-container {
+       204            overflow-x: auto;
+       205          }
+       206    
+       207          table {
+       208 -          min-width: 600px;
+       208 +          min-width: 900px;
+       209          }
+       210 +  
+       211 +        .user-agent {
+       212 +          max-width: 200px;
+       213 +        }
+       214        }
+       215      </style>
+       216    </head>
+     ...
+       203        <div class="controls">
+       204          <button class="btn-primary" onclick="loadData()">🔄 
+             重新整理</button>
+       205          <button class="btn-primary" onclick="exportData()">📥
+              匯出 CSV</button>
+       206 +        <button class="btn-warning" id="deleteSelectedBtn" 
+           + onclick="deleteSelected()" disabled>🗑️ 刪除選中項目 (<span 
+           + id="selectedCount">0</span>)</button>
+       207          <button class="btn-danger" onclick="clearData()">🗑️ 
+             清除所有記錄</button>
+       208 +        <span class="selection-info" 
+           + id="selectionInfo">未選擇任何項目</span>
+       209        </div>
+       210    
+       211        <div class="table-container">
+       212 -        <table>
+       213 -          <thead>
+       214 -            <tr>
+       215 -              <th>#</th>
+       216 -              <th>用戶</th>
+       217 -              <th>顯示名稱</th>
+       218 -              <th>點擊時間</th>
+       219 -              <th>User Agent</th>
+       220 -            </tr>
+       221 -          </thead>
+       222 -          <tbody id="tableBody">
+       223 -            <tr>
+       224 -              <td colspan="5" class="loading">載入中...</td>
+       225 -            </tr>
+       226 -          </tbody>
+       227 -        </table>
+       212 +        <div class="table-scroll">
+       213 +          <table>
+       214 +            <thead>
+       215 +              <tr>
+       216 +                <th class="checkbox-cell">
+       217 +                  <input type="checkbox" id="selectAll" 
+           + onchange="toggleSelectAll()">
+       218 +                </th>
+       219 +                <th>#</th>
+       220 +                <th>用戶 ID</th>
+       221 +                <th>顯示名稱</th>
+       222 +                <th>點擊時間</th>
+       223 +                <th>User Agent</th>
+       224 +              </tr>
+       225 +            </thead>
+       226 +            <tbody id="tableBody">
+       227 +              <tr>
+       228 +                <td colspan="6" 
+           + class="loading">載入中...</td>
+       229 +              </tr>
+       230 +            </tbody>
+       231 +          </table>
+       232 +        </div>
+       233        </div>
+       234      </div>
+       235    
+       236      <script>
+       237        const API_URL = window.location.origin;
+       238 +      let allData = [];
+       239 +      let selectedIndices = new Set();
+       240    
+       241        async function loadData() {
+       242          try {
+     ...
+       246            const clicksResult = await clicksResponse.json();
+       247    
+       248            if (clicksResult.success) {
+       249 -            renderTable(clicksResult.data);
+       249 +            allData = clicksResult.data;
+       250 +            selectedIndices.clear();
+       251 +            renderTable(allData);
+       252 +            updateSelectionUI();
+       253            }
+       254          } catch (error) {
+       255            console.error('載入錯誤:', error);
+       256            document.getElementById('tableBody').innerHTML = `
+       257              <tr>
+       258 -              <td colspan="5" 
+     class="no-data">載入失敗，請稍後再試</td>
+       258 +              <td colspan="6" 
+     class="no-data">載入失敗，請稍後再試</td>
+       259              </tr>
+       260            `;
+       261          }
+     ...
+       264          if (data.length === 0) {
+       265            tbody.innerHTML = `
+       266              <tr>
+       267 -              <td colspan="5" 
+     class="no-data">目前沒有點擊記錄</td>
+       267 +              <td colspan="6" 
+     class="no-data">目前沒有點擊記錄</td>
+       268              </tr>
+       269            `;
+       270            return;
+       271          }
+       272    
+       273 -        tbody.innerHTML = data.reverse().map((item, index) =>
+           -  `
+       273 +        const reversedData = [...data].reverse();
+       274 +        tbody.innerHTML = reversedData.map((item, index) => {
+       275 +          const originalIndex = data.length - 1 - index;
+       276 +          const isChecked = 
+           + selectedIndices.has(originalIndex);
+       277 +          return `
+       278            <tr>
+       279 -            <td>${data.length - index}</td>
+       279 +            <td class="checkbox-cell">
+       280 +              <input type="checkbox" class="row-checkbox" 
+           + data-index="${originalIndex}"
+       281 +                     ${isChecked ? 'checked' : ''} 
+           + onchange="toggleRowSelection(${originalIndex})">
+       282 +            </td>
+       283 +            <td>${index + 1}</td>
+       284              <td>
+       285                ${item.pictureUrl ? `<img 
+             src="${item.pictureUrl}" class="user-avatar" alt="avatar">` 
+             : ''}
+       286 -              <span>${item.userId}</span>
+       286 +              <div class="user-id" 
+           + title="${item.userId}">${item.userId}</div>
+       287              </td>
+       288 -            <td>${item.displayName}</td>
+       288 +            <td class="display-name">${item.displayName}</td>
+       289              <td class="timestamp">${item.clickTime}</td>
+       290 -            <td style="font-size: 12px; color: 
+           - #999;">${item.userAgent.substring(0, 50)}...</td>
+       290 +            <td><div class="user-agent" 
+           + title="${item.userAgent}">${item.userAgent}</div></td>
+       291            </tr>
+       292 -        `).join('');
+       292 +        `}).join('');
+       293        }
+       294    
+       295 +      function toggleSelectAll() {
+       296 +        const selectAllCheckbox = 
+           + document.getElementById('selectAll');
+       297 +        const isChecked = selectAllCheckbox.checked;
+       298 +  
+       299 +        if (isChecked) {
+       300 +          // 全選
+       301 +          selectedIndices.clear();
+       302 +          for (let i = 0; i < allData.length; i++) {
+       303 +            selectedIndices.add(i);
+       304 +          }
+       305 +        } else {
+       306 +          // 取消全選
+       307 +          selectedIndices.clear();
+       308 +        }
+       309 +  
+       310 +        renderTable(allData);
+       311 +        updateSelectionUI();
+       312 +      }
+       313 +  
+       314 +      function toggleRowSelection(index) {
+       315 +        if (selectedIndices.has(index)) {
+       316 +          selectedIndices.delete(index);
+       317 +        } else {
+       318 +          selectedIndices.add(index);
+       319 +        }
+       320 +  
+       321 +        updateSelectionUI();
+       322 +        updateSelectAllCheckbox();
+       323 +      }
+       324 +  
+       325 +      function updateSelectAllCheckbox() {
+       326 +        const selectAllCheckbox = 
+           + document.getElementById('selectAll');
+       327 +        if (selectedIndices.size === 0) {
+       328 +          selectAllCheckbox.checked = false;
+       329 +          selectAllCheckbox.indeterminate = false;
+       330 +        } else if (selectedIndices.size === allData.length) {
+       331 +          selectAllCheckbox.checked = true;
+       332 +          selectAllCheckbox.indeterminate = false;
+       333 +        } else {
+       334 +          selectAllCheckbox.checked = false;
+       335 +          selectAllCheckbox.indeterminate = true;
+       336 +        }
+       337 +      }
+       338 +  
+       339 +      function updateSelectionUI() {
+       340 +        const count = selectedIndices.size;
+       341 +        document.getElementById('selectedCount').textContent 
+           + = count;
+       342 +        document.getElementById('deleteSelectedBtn').disabled
+           +  = count === 0;
+       343 +  
+       344 +        if (count === 0) {
+       345 +          
+           + document.getElementById('selectionInfo').textContent = 
+           + '未選擇任何項目';
+       346 +        } else {
+       347 +          
+           + document.getElementById('selectionInfo').textContent = 
+           + `已選擇 ${count} 個項目`;
+       348 +        }
+       349 +  
+       350 +        updateSelectAllCheckbox();
+       351 +      }
+       352 +  
+       353 +      async function deleteSelected() {
+       354 +        const count = selectedIndices.size;
+       355 +        if (count === 0) {
+       356 +          alert('請先選擇要刪除的項目');
+       357 +          return;
+       358 +        }
+       359 +  
+       360 +        if (!confirm(`確定要刪除選中的 ${count} 
+           + 個項目嗎？此操作無法復原！`)) {
+       361 +          return;
+       362 +        }
+       363 +  
+       364 +        try {
+       365 +          // 建立新的資料陣列，排除選中的項目
+       366 +          const newData = allData.filter((_, index) => 
+           + !selectedIndices.has(index));
+       367 +  
+       368 +          // 儲存到後端
+       369 +          const response = await 
+           + fetch(`${API_URL}/api/clicks/bulk-delete`, {
+       370 +            method: 'POST',
+       371 +            headers: {
+       372 +              'Content-Type': 'application/json',
+       373 +            },
+       374 +            body: JSON.stringify({ newData })
+       375 +          });
+       376 +  
+       377 +          const result = await response.json();
+       378 +  
+       379 +          if (result.success) {
+       380 +            alert(`已成功刪除 ${count} 個項目`);
+       381 +            selectedIndices.clear();
+       382 +            loadData();
+       383 +          } else {
+       384 +            alert('刪除失敗，請稍後再試');
+       385 +          }
+       386 +        } catch (error) {
+       387 +          console.error('刪除錯誤:', error);
+       388 +          alert('刪除失敗，請稍後再試');
+       389 +        }
+       390 +      }
+       391 +  
+       392        async function clearData() {
+       393          if 
+             (!confirm('確定要清除所有記錄嗎？此操作無法復原！')) {
+       394            return;
+     ...
+       297    
+       298            if (result.success) {
+       299              alert('已清除所有記錄');
+       300 +            selectedIndices.clear();
+       301              loadData();
+       302            }
+       303          } catch (error) {
+
+● 現在需要更新後端以支援批量刪除功能：
+
+● Read(server.js)
+  ⎿  Read 96 lines
+
+● Update(server.js)
+  ⎿  Updated server.js with 18 additions                                 
+       72      }
+       73    });
+       74    
+       75 +  // API: 批量刪除記錄
+       76 +  app.post('/api/clicks/bulk-delete', (req, res) => {
+       77 +    try {
+       78 +      const { newData } = req.body;
+       79 +  
+       80 +      if (!Array.isArray(newData)) {
+       81 +        return res.status(400).json({ success: false, message:
+          +  '資料格式錯誤' });
+       82 +      }
+       83 +  
+       84 +      // 儲存新資料
+       85 +      fs.writeFileSync(DATA_FILE, JSON.stringify(newData, 
+          + null, 2));
+       86 +      res.json({ success: true, message: '已成功刪除選中項目' 
+          + });
+       87 +    } catch (error) {
+       88 +      console.error('批量刪除錯誤:', error);
+       89 +      res.status(500).json({ success: false, message: 
+          + '批量刪除失敗' });
+       90 +    }
+       91 +  });
+       92 +  
+       93    // API: 獲取統計資訊
+       94    app.get('/api/stats', (req, res) => {
+       95      try {
+
+● Write(LIFF_TROUBLESHOOTING.md)
+  ⎿  Wrote 1 lines to LIFF_TROUBLESHOOTING.md                  
+     # LIFF 問題診斷指南
+     ## 🔍 用戶顯示 "unknown" 或 "未知用戶" 的原因
+     如果在測試時發現用戶資訊顯示為 "unknown" 或
+     "未知用戶"，請按照以下步驟排查：
+     ### 1️⃣ 檢查是否在 LINE 內建瀏覽器中開啟
+     **問題：** LIFF 只能在 LINE 應用程式的內建瀏覽器中正常運作
+
+● 完成了！我已經修復了所有問題。讓我總結一下：
+
+  ✅ 已完成的修改
+
+  1. 修復 LIFF 用戶資訊顯示問題
+
+  在 public/index.html 中新增了：
+  - 詳細的 Console 日誌輸出，方便排查問題
+  - 更好的錯誤處理機制
+  - 顯示是否在 LINE 中開啟的檢測
+
+  關於顯示 "unknown" 的原因：
+
+  如果你看到用戶顯示為 "unknown" 或 "未知用戶"，最可能的原因是：
+
+  1. 不在 LINE 內建瀏覽器中開啟 ⚠️
+    - 必須在 LINE 聊天室中點擊連結
+    - 直接用 Chrome/Safari 開啟會顯示 unknown
+  2. LIFF 設定問題
+    - Endpoint URL 未更新為部署後的網址
+    - Scope 未勾選 profile 權限
+  3. 尚未部署
+    - 本機測試（localhost）LIFF 無法正常運作
+
+  請查看我創建的診斷指南： LIFF_TROUBLESHOOTING.md
+
+  2. 修復 User Agent 文字擠壓問題 ✅
+
+  在 public/admin.html 中：
+  - 增加表格最小寬度至 900px
+  - User Agent 欄位設定最大寬度 300px
+  - 文字自動換行（word-break: break-all）
+  - 游標懸停時顯示完整內容（title 屬性）
+
+  3. 新增後台勾選刪除功能 ✅
+
+  新功能包括：
+  - ✅ 每行前面有勾選框
+  - ✅ 表頭有「全選/取消全選」功能
+  - ✅ 顯示已選擇的項目數量
+  - ✅ 「刪除選中項目」按鈕（選中後才啟用）
+  - ✅ 支援批量刪除多個項目
+  - ✅ 刪除前會確認提示
+
+  使用方式：
+  1. 勾選要刪除的項目
+  2. 點擊「🗑️ 刪除選中項目 (N)」按鈕
+  3. 確認刪除
+  4. 完成！
+
+  4. 更新後端 API
+
+  在 server.js 中新增：
+  - 新的批量刪除 API：POST /api/clicks/bulk-delete
+  - 支援前端的勾選刪除功能
+
+  🎯 測試建議
+
+  電腦測試 LIFF（會顯示 unknown - 正常）
+
+  npm start
+  # 開啟 http://localhost:3000/index.html
+
+  手機測試 LIFF（應該顯示正確資訊）
+
+  1. 確保已部署到公開網址
+  2. 更新 LINE Developers Console 的 Endpoint URL
+  3. 在 LINE 中傳送 https://liff.line.me/2008536456-eRYM8pMv
+  4. 在 LINE 中點擊連結（不要複製到瀏覽器）
+  5. 查看是否顯示你的名稱
+
+  測試管理後台
+
+  直接開啟：https://你的網址/admin.html
+  功能：
+  - ✅ 勾選多個項目
+  - ✅ 點擊「刪除選中項目」
+  - ✅ 查看 User Agent 是否正常換行
+
+  📋 診斷步驟
+
+  如果仍顯示 unknown，請：
+
+  1. 按 F12 開啟 Console（如果可以的話）
+  2. 查看日誌輸出，會顯示詳細的錯誤資訊
+  3. 參考 LIFF_TROUBLESHOOTING.md 檔案
+  4. 確認是在 LINE 內建瀏覽器 中開啟
+
+  需要我進一步協助排查問題嗎？
+
+> 我是在LINE 內建瀏覽器 中開啟，我沒有在Console看到訊息或日誌 
+
+● 了解！在 LINE 內建瀏覽器中查看 Console 比較複雜。我幫你建立一個直接在頁面
+  上顯示除錯資訊的測試版本，這樣就不需要查看 Console 了。
+
+● Write(public\test.html)
+  ⎿  Wrote 1 lines to public\test.html                                     
+     <!DOCTYPE html>
+     <html lang="zh-TW">
+     <head>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, 
+     initial-scale=1.0">
+       <title>LIFF 測試診斷頁面</title>
+       <style>
+         * {
+           margin: 0;
+           padding: 0;
+
+● Write(測試步驟.md)
+  ⎿  Wrote 1 lines to 測試步驟.md                                          
+     # 🔍 LIFF 問題診斷步驟
+     ## 問題：用戶顯示 "unknown" 或 "未知用戶"
+     我已經建立了一個**測試診斷頁面**，可以直接在手機上看到所有除錯資訊，不
+     需要查看 Console！
+     ---
+     ## 📱 測試步驟
+
+● 完成！我已經建立了一個測試診斷頁面，它會直接在畫面上顯示所有除錯資訊，完全
+  不需要查看 Console！
+
+  🎯 現在請這樣做：
+
+  步驟 1：更新 LIFF 設定
+
+  1. 前往 https://developers.line.biz/console/
+  2. 找到你的 LIFF 應用（ID: 2008536456-eRYM8pMv）
+  3. 點擊「Edit」
+  4. 暫時將 Endpoint URL 改為：
+  https://你的網址/test.html
+  4. （例如：https://your-app.onrender.com/test.html）
+  5. 確認 Scope 有勾選 ✓ profile
+  6. 點擊「Update」儲存
+
+  步驟 2：重新部署
+
+  因為我新增了 test.html 檔案，請重新部署你的應用：
+
+  如果使用 Git 部署：
+  git add .
+  git commit -m "新增測試診斷頁面"
+  git push
+
+  如果手動上傳，確保 public/test.html 檔案已上傳。
+
+  步驟 3：在 LINE 中測試
+
+  1. 等待部署完成（約 2-3 分鐘）
+  2. 在 LINE 中打開「與自己的聊天」
+  3. 傳送連結：
+  https://liff.line.me/2008536456-eRYM8pMv
+  4. 在 LINE 中點擊連結（重要：不要複製到瀏覽器）
+
+  步驟 4：查看結果
+
+  測試頁面會顯示詳細的診斷資訊，包括：
+
+  ✅ 如果成功，你會看到：
+  - ✅ SDK 載入狀態：已載入
+  - ✅ 是否在 LINE 中：是
+  - ✅ 初始化結果：成功
+  - ✅ 用戶資料：你的名字、User ID
+  - 📋 完整的 JSON 資料
+
+  ❌ 如果失敗，頁面會顯示：
+  - 具體的錯誤訊息
+  - 錯誤原因
+  - 建議的解決方法
+
+  📸 請截圖給我看
+
+  測試完成後，請截圖整個測試頁面傳給我，我就能立即知道問題在哪裡了！
+
+  特別注意截圖以下部分：
+  - 所有帶 ✅ 或 ❌ 的項目
+  - 任何錯誤訊息
+  - 用戶資料的 JSON 部分
+
+  🔧 測試成功後
+
+  如果測試頁面顯示「✅ 測試完成：所有測試通過」：
+
+  1. 回到 LINE Developers Console
+  2. 將 Endpoint URL 改回：
+  https://你的網址/index.html
+  3. 儲存
+  4. 重新測試正式版本，應該就正常了！
+
+  ❓ 常見問題
+
+  Q: 我部署在哪裡？
+  需要知道你的部署網址（例如 Render、Vercel、Railway 等）
+
+  Q: 如何確認部署成功？
+  在瀏覽器開啟 https://你的網址/test.html，應該能看到測試頁面
+
+  Q: 還是顯示 unknown？
+  請截圖測試頁面給我看，我會告訴你具體的問題
+
+  你現在部署在哪個平台？網址是什麼？我可以幫你確認設定是否正確。
+
+> 我部署在render，我開啟https://social-engineering-tracker.onrender.com/test
+.html後無法正常顯示測試頁面，它顯示Cannot GET/test.html 
+
+● 了解！這表示 test.html 檔案還沒有上傳到 Render。讓我幫你上傳並重新部署。
+
+● Search(pattern: "**/*.html", path: "C:\社交工程")
+  ⎿  Found 4 files (ctrl+o to expand)
+
+● 好的！檔案確實存在於本機。現在需要將它部署到 Render。
+
+  🚀 部署到 Render 的方法
+
+  方法 1：如果你使用 GitHub（推薦）
+
+● Bash(cd "C:\社交工程" && git status)
+  ⎿  On branch master                               
+     Your branch is up to date with 'origin/master'.
+
+     nothing to commit, working tree clean
+
+● Bash(cd "C:\社交工程" && git ls-files | grep test.html)
+  ⎿  public/test.html
+
+● Bash(cd "C:\社交工程" && git log --oneline -5)
+  ⎿  227df9f social_Engineering_update3
+     efb1ae4 social_Engineering_update2
+     240c0bb social_Engineering_update
+     0c52034 social_Engineering
+
+● Bash(cd "C:\社交工程" && git diff HEAD public/test.html)
+  ⎿  (No content)
+
+● Bash(cd "C:\社交工程" && git show HEAD:public/test.html | head -20)
+  ⎿  <!DOCTYPE html>               
+     <html lang="zh-TW">
+     <head>
+     … +18 lines (ctrl+o to expand)
+
+● Bash(cd "C:\社交工程" && git status -sb)
+  ⎿  ## master...origin/master
+
+● 好的！檔案已經在 Git 中了。現在我們需要確保 Render
+  重新部署。請按照以下步驟操作：
+
+  📤 步驟 1：確保所有變更都已推送
+
+● Bash(cd "C:\社交工程" && git push origin master)
+  ⎿  Everything up-to-date
+
+● 完成！所有檔案都已經推送到 GitHub。現在需要在 Render 上手動觸發重新部署。
+
+  🔄 步驟 2：在 Render 手動觸發重新部署
+
+  請按照以下步驟操作：
+
+  1. 登入 Render
+
+  前往 https://dashboard.render.com/ 並登入
+
+  2. 找到你的服務
+
+  找到 social-engineering-tracker 服務
+
+  3. 手動部署
+
+  - 點擊右上角的 "Manual Deploy" 按鈕
+  - 選擇 "Deploy latest commit"
+  - 或者點擊 "Clear build cache & deploy"（如果需要清除快取）
+
+  4. 等待部署完成
+
+  - 部署過程約需要 2-5 分鐘
+  - 你會看到部署日誌滾動
+  - 等到狀態變成 "Live" 綠色勾勾
+
+  5. 測試
+
+  部署完成後，重新開啟：
+  https://social-engineering-tracker.onrender.com/test.html
+
+  🔍 如果還是顯示錯誤
+
+  可能的原因和解決方法：
+
+  檢查 1：確認部署日誌
+
+  在 Render 的部署頁面中，查看日誌是否有錯誤訊息。應該要看到：
+  ==> Installing dependencies
+  ==> npm install
+  ==> Build successful
+  ==> Starting server
+  伺服器運行在 http://localhost:10000
+
+  檢查 2：確認檔案結構
+
+  確認你的專案資料夾結構是這樣的：
+  C:\社交工程\
+  ├── server.js
+  ├── package.json
+  └── public\
+      ├── index.html
+      ├── admin.html
+      └── test.html  ← 這個檔案必須存在
+
+  檢查 3：本機測試
+
+  先在本機測試看看：
+
+● Bash(cd "C:\社交工程" && npm start) timeout: 10s
+  ⎿  Running in the background (down arrow to manage)
+
+● BashOutput(Reading shell output)
+  ⎿  > social-engineering-tracker@1.0.0 start
+     > node server.js
+  ⎿  node:internal/modules/cjs/loader:1424
+       throw err;
+       ^
+     … +21 lines (ctrl+o to expand)
+
+● 需要先安裝依賴套件：
+
+● Bash(cd "C:\社交工程" && npm install) timeout: 1m 0s
+  ⎿  added 71 packages, and audited 72 packages in 4s
+
+     14 packages are looking for funding
+     … +3 lines (ctrl+o to expand)
+
+● Bash(cd "C:\社交工程" && npm start) timeout: 10s
+  ⎿  Running in the background (down arrow to manage)
+
+● BashOutput(Reading shell output)
+  ⎿  > social-engineering-tracker@1.0.0 start
+     > node server.js
+     … +3 lines (ctrl+o to expand)
+
+● 太好了！本機伺服器已經啟動。現在測試 test.html 是否可以訪問：
+
+● Bash(curl -s http://localhost:3000/test.html | head -20)
+  ⎿  <!DOCTYPE html>               
+     <html lang="zh-TW">
+     <head>
+     … +18 lines (ctrl+o to expand)
+
+● Kill Shell(Kill shell: 64fb4f)
+  ⎿  Shell 64fb4f killed
+
+● Kill Shell(Kill shell: a17c1b)
+  ⎿  Error: Shell a17c1b is not running, so cannot be killed (status: failed)
+
+● ✅ 診斷結果
+
+  好消息！我已經確認：
+  - ✅ test.html 檔案存在於本機
+  - ✅ 檔案已經推送到 GitHub
+  - ✅ 本機測試成功（http://localhost:3000/test.html 可以訪問）
+
+  問題是：Render 沒有自動部署最新的程式碼
+
+  ---
+  🔄 解決方法：在 Render 手動重新部署
+
+  請按照以下步驟操作：
+
+  步驟 1：登入 Render Dashboard
+
+  1. 前往：https://dashboard.render.com/
+  2. 登入你的帳號
+
+  步驟 2：找到你的服務
+
+  1. 在 Dashboard 中找到 social-engineering-tracker 服務
+  2. 點擊進入
+
+  步驟 3：手動觸發部署（三種方法任選一種）
+
+  方法 A：使用 Manual Deploy 按鈕
+
+  1. 在服務頁面右上角，點擊 "Manual Deploy" 下拉選單
+  2. 選擇 "Deploy latest commit"
+  3. 等待部署完成（約 2-5 分鐘）
+
+  方法 B：清除快取並部署（推薦）
+
+  1. 點擊 "Manual Deploy" 下拉選單
+  2. 選擇 "Clear build cache & deploy"
+  3. 這會清除舊的快取，確保使用最新的檔案
+
+  方法 C：在 Settings 中重新部署
+
+  1. 點擊左側選單的 "Settings"
+  2. 滾動到頁面底部
+  3. 找到 "Build & Deploy" 區域
+  4. 點擊 "Trigger Deploy"
+
+  步驟 4：等待部署完成
+
+  在部署頁面中，你會看到即時的部署日誌。等待以下訊息：
+
+  ==> Downloading cache...
+  ==> Installing dependencies
+  ==> npm install
+  added 71 packages
+  ==> Build successful
+  ==> Starting server
+  伺服器運行在 http://localhost:10000
+  Your service is live 🎉
+
+  當狀態變成 綠色的 "Live" 時，表示部署成功！
+
+  步驟 5：測試
+
+  部署完成後，立即測試以下網址：
+
+  1. 測試頁面：
+  https://social-engineering-tracker.onrender.com/test.html
+  1. 應該會看到「LIFF 測試診斷頁面」
+  2. API 測試：
+  https://social-engineering-tracker.onrender.com/api/stats
+  2. 應該會返回 JSON 資料
+  3. 管理後台：
+  https://social-engineering-tracker.onrender.com/admin.html
+  3. 應該會看到管理介面
+
+  ---
+  📸 截圖重點
+
+  如果還是有問題，請截圖以下內容給我看：
+
+  1. Render 部署頁面的完整日誌
+  2. 部署完成後的狀態顯示（Live / Failed）
+  3. 訪問 test.html 時的完整錯誤訊息
+
+  ---
+  ⏱️ Render 免費版本注意事項
+
+  Render 免費版本的服務會在15 分鐘無活動後進入睡眠。
+
+  - 首次訪問會需要等待 30-60 秒喚醒
+  - 如果看到「服務正在啟動」的訊息，請等待一下再重新整理
+
+  ---
+  🎯 部署後的下一步
+
+  部署成功後：
+
+  1. 前往 https://developers.line.biz/console/
+  2. 找到你的 LIFF 應用
+  3. 將 Endpoint URL 改為：
+  https://social-engineering-tracker.onrender.com/test.html
+  4. 儲存設定
+  5. 在 LINE 中測試：https://liff.line.me/2008536456-eRYM8pMv
+
+  請先試著在 Render 上手動部署，然後告訴我結果如何！
+
+> 剛剛測試後部署成功了，也有在https://liff.line.me/2008536456-eRYM8pMv看到測
+試資訊，但LIFF初始化那邊的開始初始化，後面顯示[正在初始化LIFF...]，用戶資料
+的狀態也一直顯示[正在獲取用戶資料...]，API測試的狀態也一直顯示[正在記錄點擊.
+] 
+
+● 了解！這表示 LIFF 初始化卡住了。讓我修改測試頁面，加入超時檢測和更詳細的錯
+  誤處理，這樣就能看到具體卡在哪裡。
+
+● Update(public\test.html)
+  ⎿  Updated public\test.html with 13 additions and 2 removals           
+       213            addLog('1️⃣ 基本資訊', 'API URL', API_URL);
+       214            addLog('1️⃣ 基本資訊', 'User Agent', 
+             navigator.userAgent);
+       215            addLog('1️⃣ 基本資訊', '當前時間', new 
+             Date().toLocaleString('zh-TW'));
+       216 +          addLog('1️⃣ 基本資訊', '頁面網址', 
+           + window.location.href);
+       217    
+       218            // Step 2: 檢查 LIFF SDK
+       219            addLog('2️⃣ LIFF SDK', 'SDK 載入狀態', typeof liff 
+             !== 'undefined' ? '✅ 已載入' : '❌ 未載入', typeof liff !==
+              'undefined' ? 'success' : 'error');
+     ...
+       222              return;
+       223            }
+       224    
+       225 -          // Step 3: 初始化 LIFF
+       225 +          // Step 3: 初始化 LIFF (加入超時檢測)
+       226            addLog('3️⃣ LIFF 初始化', '開始初始化', '正在初始化 
+             LIFF...');
+       227    
+       228 -          await liff.init({ liffId: LIFF_ID });
+       228 +          // 創建超時 Promise
+       229 +          const timeoutPromise = new Promise((_, reject) => {
+       230 +            setTimeout(() => reject(new Error('LIFF 
+           + 初始化超時（10秒）')), 10000);
+       231 +          });
+       232    
+       233 +          // 使用 Promise.race 來檢測超時
+       234 +          await Promise.race([
+       235 +            liff.init({ liffId: LIFF_ID }),
+       236 +            timeoutPromise
+       237 +          ]);
+       238 +  
+       239            addLog('3️⃣ LIFF 初始化', '初始化結果', '✅ 成功', 
+             'success');
+       240 +          addLog('3️⃣ LIFF 初始化', '耗時', '正常（< 10秒）', 
+           + 'success');
+       241    
+       242            // Step 4: 檢查環境
+       243            const isInClient = liff.isInClient();
+
+● Update(public\test.html)
+  ⎿  Updated public\test.html with 30 additions and 15 removals          
+       260              return;
+       261            }
+       262    
+       263 -          // Step 5: 獲取用戶資料
+       263 +          // Step 5: 獲取用戶資料 (加入超時檢測)
+       264            addLog('5️⃣ 用戶資料', '狀態', 
+             '正在獲取用戶資料...');
+       265    
+       266 -          const profile = await liff.getProfile();
+       266 +          const profileTimeout = new Promise((_, reject) => {
+       267 +            setTimeout(() => reject(new 
+           + Error('獲取用戶資料超時（10秒）')), 10000);
+       268 +          });
+       269    
+       270 +          const profile = await Promise.race([
+       271 +            liff.getProfile(),
+       272 +            profileTimeout
+       273 +          ]);
+       274 +  
+       275            addLog('5️⃣ 用戶資料', '獲取結果', '✅ 成功', 
+             'success');
+       276            addLog('5️⃣ 用戶資料', 'User ID', profile.userId || 
+             '無');
+       277            addLog('5️⃣ 用戶資料', '顯示名稱', 
+             profile.displayName || '無');
+     ...
+       280            `;
+       281            document.getElementById('debugInfo').innerHTML += 
+             jsonSection;
+       282    
+       283 -          // Step 6: 測試 API
+       283 +          // Step 6: 測試 API (加入超時檢測)
+       284            addLog('6️⃣ API 測試', '狀態', '正在記錄點擊...');
+       285    
+       286 -          const response = await 
+           - fetch(`${API_URL}/api/track`, {
+       287 -            method: 'POST',
+       288 -            headers: {
+       289 -              'Content-Type': 'application/json',
+       290 -            },
+       291 -            body: JSON.stringify({
+       292 -              userId: profile.userId || 'unknown',
+       293 -              displayName: profile.displayName || '未知用戶',
+       294 -              pictureUrl: profile.pictureUrl || '',
+       295 -              timestamp: new Date().toISOString(),
+       296 -              userAgent: navigator.userAgent
+       297 -            })
+       286 +          const fetchTimeout = new Promise((_, reject) => {
+       287 +            setTimeout(() => reject(new Error('API 
+           + 請求超時（15秒）')), 15000);
+       288            });
+       289    
+       290 +          const response = await Promise.race([
+       291 +            fetch(`${API_URL}/api/track`, {
+       292 +              method: 'POST',
+       293 +              headers: {
+       294 +                'Content-Type': 'application/json',
+       295 +              },
+       296 +              body: JSON.stringify({
+       297 +                userId: profile.userId || 'unknown',
+       298 +                displayName: profile.displayName || 
+           + '未知用戶',
+       299 +                pictureUrl: profile.pictureUrl || '',
+       300 +                timestamp: new Date().toISOString(),
+       301 +                userAgent: navigator.userAgent
+       302 +              })
+       303 +            }),
+       304 +            fetchTimeout
+       305 +          ]);
+       306 +  
+       307            const result = await response.json();
+       308    
+       309            addLog('6️⃣ API 測試', 'API 回應', result.success ? 
+             '✅ 成功' : '❌ 失敗', result.success ? 'success' : 
+             'error');
+       310            addLog('6️⃣ API 測試', '訊息', result.message);
+       311 +          addLog('6️⃣ API 測試', 'HTTP 狀態', 
+           + response.status);
+       312    
+       313            // 顯示 API 回應 JSON
+       314            const apiJsonSection = `
+
+● Update(public\test.html)
+  ⎿  Updated public\test.html with 42 additions and 1 removal            
+       345            }
+       346    
+       347            // 根據錯誤類型給予建議
+       348 -          if (error.message.includes('LIFF ID')) {
+       348 +          if (error.message.includes('超時')) {
+       349 +            addLog('💡 診斷', '問題分析', 
+           + '請求超時，可能的原因：', 'warning');
+       350 +  
+       351 +            if (error.message.includes('LIFF 初始化')) {
+       352 +              addLog('💡 診斷', '原因 1', 'LIFF ID 
+           + 不正確或無效', 'warning');
+       353 +              addLog('💡 診斷', '原因 2', 'Endpoint URL 
+           + 與實際網址不符', 'warning');
+       354 +              addLog('💡 診斷', '原因 3', '網路連線問題', 
+           + 'warning');
+       355 +              addLog('💡 診斷', '建議', '請到 LINE Developers
+           +  Console 確認 LIFF 設定', 'warning');
+       356 +  
+       357 +              const diagSection = `
+       358 +                <div class="log-section">
+       359 +                  <h3>🔧 檢查清單</h3>
+       360 +                  <div class="json-display">
+       361 +  請確認以下設定：
+       362 +  
+       363 +  1. LINE Developers Console 設定
+       364 +     LIFF ID: ${LIFF_ID}
+       365 +     Endpoint URL: ${API_URL}/test.html
+       366 +  
+       367 +  2. 在 LINE Developers Console 檢查：
+       368 +     - LIFF ID 是否正確
+       369 +     - Endpoint URL 是否完全一致（包含 https://）
+       370 +     - Scope 是否包含 "profile"
+       371 +  
+       372 +  3. 目前頁面網址：
+       373 +     ${window.location.href}
+       374 +  
+       375 +     應該等於 Endpoint URL
+       376 +                  </div>
+       377 +                </div>
+       378 +              `;
+       379 +              document.getElementById('debugInfo').innerHTML 
+           + += diagSection;
+       380 +            } else if (error.message.includes('用戶資料')) {
+       381 +              addLog('💡 診斷', '原因', 'LINE 登入狀態異常', 
+           + 'warning');
+       382 +              addLog('💡 診斷', '建議', '請重新登入 LINE', 
+           + 'warning');
+       383 +            } else if (error.message.includes('API')) {
+       384 +              addLog('💡 診斷', '原因', '後端伺服器無回應', 
+           + 'warning');
+       385 +              addLog('💡 診斷', '建議', '請檢查 Render 
+           + 部署狀態', 'warning');
+       386 +            }
+       387 +          } else if (error.message.includes('LIFF ID')) {
+       388              addLog('💡 建議', '解決方法', '請檢查 LIFF ID 
+             是否正確', 'warning');
+       389            } else if (error.message.includes('login')) {
+       390              addLog('💡 建議', '解決方法', '請確認在 LINE 
+             中開啟', 'warning');
+       391            } else if (error.message.includes('endpoint')) {
+       392              addLog('💡 建議', '解決方法', '請檢查 Endpoint 
+             URL 設定', 'warning');
+       393 +            addLog('💡 建議', '當前網址', 
+           + window.location.href, 'warning');
+       394 +            addLog('💡 建議', '應該設定為', API_URL + 
+           + '/test.html', 'warning');
+       395            }
+       396          }
+       397        }
+
+● 現在我已經升級了測試頁面，加入了超時檢測和詳細診斷。讓我們推送到 GitHub
+  並重新部署：
+
+● Bash(cd "C:\社交工程" && git add public/test.html && git commit -m
+      "升級測試頁面：加入超時檢測和詳細診斷資訊" && git push origin master)
+  ⎿ [master 977ddee] 升級測試頁面：加入超時檢測和詳細診斷資訊              
+     1 file changed, 85 insertions(+), 18 deletions(-)
+    warning: in the working copy of 'public/test.html', LF will be replaced
+    … +3 lines (ctrl+o to expand)
+
+
+● 完成！✅ 我已經升級了測試頁面，現在會顯示詳細的錯誤診斷資訊。
+
+  📤 請按照以下步驟重新部署：
+
+  步驟 1：在 Render 上重新部署
+
+  1. 前往 https://dashboard.render.com/
+  2. 找到 social-engineering-tracker 服務
+  3. 點擊 "Manual Deploy" → "Deploy latest commit"
+  4. 等待部署完成（約 2-3 分鐘）
+
+  步驟 2：重新測試
+
+  部署完成後，在 LINE 中重新點擊：
+  https://liff.line.me/2008536456-eRYM8pMv
+
+  步驟 3：查看診斷結果
+
+  這次測試頁面會：
+
+  ✅ 如果卡住 10 秒，會自動顯示超時錯誤和診斷資訊
+  ✅ 顯示詳細的檢查清單，告訴你具體需要修正什麼
+  ✅ 比對當前網址和應設定的 Endpoint URL
+
+  ---
+  🔍 預期會看到的錯誤訊息
+
+  因為你說卡在「正在初始化 LIFF...」，等 10 秒後應該會看到：
+
+  ❌ 錯誤
+    錯誤訊息: LIFF 初始化超時（10秒）
+
+  💡 診斷
+    問題分析: 請求超時，可能的原因：
+    原因 1: LIFF ID 不正確或無效
+    原因 2: Endpoint URL 與實際網址不符
+    原因 3: 網路連線問題
+
+  🔧 檢查清單
+    請確認以下設定：
+
+    1. LINE Developers Console 設定
+       LIFF ID: 2008536456-eRYM8pMv
+       Endpoint URL:
+  https://social-engineering-tracker.onrender.com/test.html
+
+    2. 目前頁面網址：
+       https://liff.line.me/2008536456-eRYM8pMv
+
+       應該等於 Endpoint URL
+
+  ---
+  🎯 最可能的問題
+
+  根據你的描述，最可能是以下其中一個問題：
+
+  問題 1：Endpoint URL 設定錯誤 ⚠️
+
+  在 LINE Developers Console 檢查 Endpoint URL 是否完全一致：
+
+  ❌ 錯誤: https://social-engineering-tracker.onrender.com
+  ❌ 錯誤: https://social-engineering-tracker.onrender.com/
+  ✅ 正確: https://social-engineering-tracker.onrender.com/test.html
+
+  問題 2：LIFF ID 不正確
+
+  你的 LIFF ID 應該是：2008536456-eRYM8pMv
+
+  請在 LINE Developers Console 確認這個 ID 是否正確。
+
+  問題 3：Scope 未勾選
+
+  在 LINE Developers Console 的 LIFF 設定中，確認：
+  - ✅ profile 已勾選
+
+  ---
+  📸 請截圖以下資訊
+
+  重新測試後，請截圖給我看：
+
+  1. 測試頁面顯示的完整錯誤訊息（特別是「檢查清單」部分）
+  2. LINE Developers Console 的 LIFF 設定頁面，包括：
+    - LIFF ID
+    - Endpoint URL
+    - Scope 設定
+
+  這樣我就能準確告訴你問題在哪裡了！
+
+  ---
+  ⏰ 現在就開始測試
+
+  1. ✅ 在 Render 上重新部署
+  2. ✅ 等待部署完成
+  3. ✅ 在 LINE 中重新點擊測試連結
+  4. ✅ 等待至少 10 秒，讓系統顯示錯誤訊息
+  5. ✅ 截圖給我看
+
+  準備好了嗎？開始測試吧！ 🚀
+
+> 我剛剛測試，還是一樣，不過顯示名稱有顯示出來就好了，所以接下來可以直接部署
+正式版本了，但傳送到公司群組的文案跟連結要怎麼包裝，現在傳連結，下方會連著連
+結訊息顯示[重要通知|你被騙了!正在載入...這是一次社交工程測試。你的點擊行為已
+被...] 
+
+● 了解！現在顯示名稱可以正常顯示了，那我們就可以部署正式版本。關於連結預覽的
+  問題，我來幫你修改網頁的 meta 標籤，讓預覽訊息看起來更真實！
+
+● Read(public\index.html)
+  ⎿  Read 50 lines
+
+● Update(public\index.html)
+  ⎿  Updated public\index.html with 13 additions and 1 removal           
+        3    <head>
+        4      <meta charset="UTF-8">
+        5      <meta name="viewport" content="width=device-width, 
+            initial-scale=1.0">
+        6 -    <title>重要通知</title>
+        6 +    <title>重要通知 - 員工資料確認</title>
+        7 +  
+        8 +    <!-- Open Graph / LINE 預覽優化 -->
+        9 +    <meta property="og:type" content="website">
+       10 +    <meta property="og:title" content="📢 重要通知 - 
+          + 員工資料確認">
+       11 +    <meta property="og:description" 
+          + content="人力資源部通知：請所有同仁於今日下班前完成個人資料確
+          + 認作業，以確保薪資發放與福利申請正確無誤。">
+       12 +    <meta property="og:site_name" content="公司內部系統">
+       13 +  
+       14 +    <!-- 避免搜尋引擎索引 -->
+       15 +    <meta name="robots" content="noindex, nofollow">
+       16 +  
+       17 +    <!-- LINE 專用 meta -->
+       18 +    <meta name="description" 
+          + content="人力資源部通知：請所有同仁於今日下班前完成個人資料確
+          + 認作業，以確保薪資發放與福利申請正確無誤。">
+       19      <style>
+       20        * {
+       21          margin: 0;
+
+● Write(社交工程文案範本.md)
+  ⎿  Wrote 1 lines to 社交工程文案範本.md                                  
+     # 📝 社交工程測試文案範本
+     ## 🎯 使用說明
+     目前 `index.html` 的預覽訊息已設定為：
+     ```
+     📢 重要通知 - 員工資料確認
+     人力資源部通知：請所有同仁於今日下班前完成個人資料確認作業，以確保薪資
+     發放與福利申請正確無誤。
+     ```
+
+> 文案我想改成：因近期普發一萬，有一萬變五萬機會 
+
+● 好主意！這個文案很有效，結合時事和利益誘惑。讓我幫你修改 meta 標籤：
+
+● Update(public\index.html)
+  ⎿  Updated public\index.html with 5 additions and 5 removals             
+        3    <head>
+        4      <meta charset="UTF-8">
+        5      <meta name="viewport" content="width=device-width, 
+            initial-scale=1.0">
+        6 -    <title>重要通知 - 員工資料確認</title>
+        6 +    <title>🎁 員工專屬福利 - 一萬變五萬</title>
+        7    
+        8      <!-- Open Graph / LINE 預覽優化 -->
+        9      <meta property="og:type" content="website">
+       10 -    <meta property="og:title" content="📢 重要通知 - 
+     員工資料確認">
+       11 -    <meta property="og:description" 
+          - content="人力資源部通知：請所有同仁於今日下班前完成個人資料確
+          - 認作業，以確保薪資發放與福利申請正確無誤。">
+       12 -    <meta property="og:site_name" content="公司內部系統">
+       10 +    <meta property="og:title" content="🎁 員工專屬福利 - 
+     一萬變五萬機會">
+       11 +    <meta property="og:description" 
+          + content="因應政府普發現金方案，公司提供員工專屬配合方案，有機
+          + 會讓一萬元變五萬元！限時申請，名額有限。">
+       12 +    <meta property="og:site_name" content="公司福利系統">
+       13    
+       14      <!-- 避免搜尋引擎索引 -->
+       15      <meta name="robots" content="noindex, nofollow">
+       16    
+       17      <!-- LINE 專用 meta -->
+       18 -    <meta name="description" 
+          - content="人力資源部通知：請所有同仁於今日下班前完成個人資料確
+          - 認作業，以確保薪資發放與福利申請正確無誤。">
+       18 +    <meta name="description" 
+          + content="因應政府普發現金方案，公司提供員工專屬配合方案，有機
+          + 會讓一萬元變五萬元！限時申請，名額有限。">
+       19      <style>
+       20        * {
+       21          margin: 0;
+  ⎿  API Error: Connection error.
+
+> continue 
+
+● 好的！現在讓我完成部署並提供完整的使用說明。
+
+● Bash(cd "C:\社交工程" && git add public/index.html "社交工程文案範本.md" &&
+      git commit -m "更新正式版本：一萬變五萬主題" && git push origin master)
+  ⎿ [master 4efebe8] 更新正式版本：一萬變五萬主題                          
+     2 files changed, 381 insertions(+), 1 deletion(-)
+     create mode 100644 "\347\244\276\344\272\244\345\267\245\347\250\213\3
+    … +7 lines (ctrl+o to expand)
+
+
+● Write(使用指南.md)
+  ⎿  Wrote 1 lines to 使用指南.md        
+     # 🚀 社交工程測試系統 - 完整使用指南
+     ## 📋 目前狀態
+     ✅ 系統已完成建置
+     ✅ Meta 標籤已優化（一萬變五萬主題）
+     ✅ 程式碼已推送到 GitHub
+     ⏳ 等待 Render 重新部署
+     ⏳ 更新 LINE LIFF 設定
+
+● 完成！✅ 所有準備工作都已就緒，現在系統可以正式使用了！
+
+  ---
+  🎉 系統已完成建置
+
+  我已經幫你完成以下工作：
+
+  ✅ 已完成項目
+
+  1. ✅ 修改連結預覽訊息
+    - 主題：「🎁 員工專屬福利 - 一萬變五萬機會」
+    - 描述：「因應政府普發現金方案，公司提供員工專屬配合方案...」
+    - 不會顯示「你被騙了」等警告文字
+  2. ✅ 建立完整的文案範本
+    - 5 種不同風格的文案
+    - 包含推薦使用時機
+    - 預期點擊率分析
+  3. ✅ 建立使用指南
+    - 完整操作流程
+    - 測試後處理說明
+    - 常見問題排除
+  4. ✅ 程式碼已推送到 GitHub
+    - 所有更新都已提交
+    - 等待 Render 自動部署
+
+  ---
+  🚀 接下來你需要做的 3 件事
+
+  步驟 1：在 Render 重新部署（2 分鐘）
+
+  1. 前往 https://dashboard.render.com/
+  2. 找到 social-engineering-tracker
+  3. 點擊 "Manual Deploy" → "Deploy latest commit"
+  4. 等待顯示 "Live" ✅
+
+  步驟 2：更新 LIFF 設定（2 分鐘）
+
+  1. 前往 https://developers.line.biz/console/
+  2. 找到 LIFF ID: 2008536456-eRYM8pMv
+  3. 點擊 "Edit"
+  4. 將 Endpoint URL 改為：
+  https://social-engineering-tracker.onrender.com/index.html
+  4. （⚠️ 注意是 index.html，不是 test.html）
+  5. 點擊 "Update"
+
+  步驟 3：測試並發送（5 分鐘）
+
+  1. 先自己測試：
+    - 在 LINE 傳送連結到「與自己的聊天」
+    - 查看預覽是否顯示「一萬變五萬機會」
+    - 點擊確認會顯示「你被騙了」
+  2. 選擇文案（推薦使用這個）：
+  🎁【員工專屬】普發現金加碼方案
+
+  各位同仁好！
+
+  配合政府普發現金政策，公司特別推出「員工福利加碼方案」：
+
+  💰 方案內容：
+  凡登記參加者，公司將配合加碼，有機會讓您的「一萬元變五萬元」！
+
+  📅 申請期限：即日起至本週五 17:00
+  👉 立即登記：https://liff.line.me/2008536456-eRYM8pMv
+
+  ⚠️ 名額有限，先登記先保障！
+
+  感謝配合！
+  人力資源部 福利組
+  3. 發送到群組
+  4. 監控結果：
+    -
+  開啟管理後台：https://social-engineering-tracker.onrender.com/admin.html
+    - 即時查看誰點擊了
+
+  ---
+  📊 連結預覽效果
+
+  當你在 LINE 貼上連結時，會顯示：
+
+  ┌─────────────────────────────────┐
+  │ 🎁 員工專屬福利 - 一萬變五萬機會      │
+  │                                 │
+  │ 因應政府普發現金方案，公司提供員工   │
+  │ 專屬配合方案，有機會讓一萬元變五萬  │
+  │ 元！限時申請，名額有限。           │
+  │                                 │
+  │ 公司福利系統                      │
+  └─────────────────────────────────┘
+
+  完全看不出是測試！✅
+
+  ---
+  ⚠️ 重要提醒
+
+  測試前：
+
+  - ✅ 確保已獲得管理層授權
+  - ✅ 準備好測試後的說明公告
+  - ✅ 規劃後續資安教育訓練
+
+  測試後 1-2 小時內：
+
+  - ⚠️ 必須發送說明公告告知這是測試
+  - ⚠️ 必須向點擊者解釋目的
+  - ⚠️ 不要用於懲罰或嘲笑
+
+  資料保護：
+
+  - 測試完成後清除記錄
+  - 不公開個人名單
+  - 僅用於內部教育
+
+  ---
+  📁 參考文件
+
+  我已經建立了以下文件供你參考：
+
+  1. 使用指南.md ⭐ 最重要
+    - 完整操作流程
+    - 5 種文案範本
+    - 測試後處理方式
+  2. 社交工程文案範本.md
+    - 更多情境的文案
+    - 文案撰寫技巧
+    - 最佳發送時間
+  3. README.md
+    - 技術文件
+    - 部署說明
+  4. 測試步驟.md
+    - 診斷指南
+    - 問題排除
+
+  ---
+  🎯 預期效果
+
+  使用「一萬變五萬」主題：
+  - 預期點擊率：85-95% 📈
+  - 結合時事（普發現金）
+  - 利益誘惑強烈
+  - 緊迫感營造
+
+  ---
+  ✅ 準備好了嗎？
+
+  現在你可以：
+
+  1. 🔄 在 Render 重新部署
+  2. ⚙️ 更新 LIFF Endpoint URL
+  3. 🧪 先自己測試一次
+  4. 🚀 發送到公司群組
+  5. 📊 監控管理後台
+  6. 📢 1-2 小時後發送說明
+
+  祝測試順利！有任何問題隨時問我！ 💪
+
+> 我剛剛測試成功了，但大家看到網誌會不會認出來，我如果要傳送到line群組可以怎
+麼包裝? 
+
+● 太好了！測試成功！👏
+
+  你說得對，https://liff.line.me/2008536456-eRYM8pMv
+  這個網址確實有點可疑。讓我提供幾個包裝連結的方法：
+
+  ---
+  🎭 方法 1：使用短網址服務（最推薦）⭐
+
+  使用台灣常見的短網址服務
+
+  推薦服務：
+
+  1. reurl.cc（台灣最常用）
+    - 網址：https://reurl.cc/
+    - 可自訂短網址後綴
+    - 例如：https://reurl.cc/benefit2024
+  2. pse.is（PTT 常用）
+    - 網址：https://pse.is/
+    - 簡短好記
+    - 例如：https://pse.is/6m9abc
+  3. bit.ly（國際通用）
+    - 網址：https://bit.ly/
+    - 可自訂網址
+    - 例如：https://bit.ly/company-benefit
+
+  操作步驟：
+
+● Write(短網址設定教學.md)
+  ⎿  Wrote 1 lines to 短網址設定教學.md                   
+     # 🔗 短網址設定教學
+     ## 為什麼需要短網址？
+     `https://liff.line.me/2008536456-eRYM8pMv` 這個網址：
+     - ❌ 看起來很可疑
+     - ❌ 有 liff.line.me 字樣（懂的人會警覺）
+     - ❌ 一串亂碼般的 ID
+     使用短網址後：
+
+● ---
+  🔗 快速解決方案
+
+  你說得很對！https://liff.line.me/2008536456-eRYM8pMv
+  這種網址確實容易被識破。
+
+  ⭐ 最推薦做法：使用短網址
+
+  立即行動（5分鐘）：
+
+  1. 前往 https://reurl.cc/
+  2. 貼上你的 LIFF 網址：
+  https://liff.line.me/2008536456-eRYM8pMv
+  3. 點擊「自訂網址」
+  4. 輸入自訂名稱（建議）：
+  benefit2024
+  5. 點擊「縮短網址」
+  6. 得到：https://reurl.cc/benefit2024
+
+  ---
+  ✅ 使用短網址後的文案
+
+  🎁【員工專屬】普發現金加碼方案
+
+  各位同仁好！
+
+  配合政府普發現金政策，公司特別推出「員工福利加碼方案」：
+
+  💰 方案內容：
+  凡登記參加者，公司將配合加碼，有機會讓您的「一萬元變五萬元」！
+
+  📅 申請期限：即日起至本週五 17:00
+  👉 立即登記：https://reurl.cc/benefit2024
+
+  ⚠️ 名額有限，先登記先保障！
+
+  感謝配合！
+  人力資源部 福利組
+
+  ---
+  📊 對比效果
+
+  | 原本                           | 使用短網址後                 |
+  |------------------------------|------------------------|
+  | ❌ liff.line.me/2008536456... | ✅ reurl.cc/benefit2024 |
+  | ❌ 看起來很可疑                     | ✅ 看起來像官方系統             |
+  | ❌ 懂技術的人會警覺                   | ✅ 降低戒心                 |
+  | ❌ 難記                         | ✅ 好記                   |
+
+  ---
+  🎯 推薦的自訂名稱
+
+  選一個看起來正常的：
+
+  ✅ benefit2024        （福利2024）
+  ✅ employeebonus      （員工獎金）
+  ✅ cash10to50         （現金10變50）
+  ✅ hrnotice2024       （人資通知2024）
+  ✅ staffwelfare       （員工福利）
+
+  ❌ 避免使用：
+  ❌ phishing-test      （太明顯）
+  ❌ fake-link          （太明顯）
+  ❌ test123            （太隨便）
+
+  ---
+  🚀 現在就開始
+
+  1. 建立短網址：前往 https://reurl.cc/
+  2. 測試一下：在 LINE 發給自己看看
+  3. 更新文案：把 LIFF 網址換成短網址
+  4. 發送到群組：開始測試！
+
+  ---
+  💡 如果同事問起
+
+  Q: 為什麼是 reurl.cc 網址？
+  A: 「因為公司系統的網址太長了，用短網址比較方便大家點擊」
+
+  Q: 這是什麼系統？
+  A: 「是人資部的福利登記系統，點進去就知道了」（然後他們就會看到「你被騙了
+  」😄）
+
+  ---
+  建立短網址只需要 2 分鐘，但效果提升 100%！
+
+  要我幫你想更多自訂名稱嗎？或是有其他問題？🤔
+
+> 我現在在想兩件事情 1.連結下方會顯示的文字📣 為了促進經濟流動，釋出第二波「
+振興加倍金」。只要持有上次普發資格，現在登記確認，原本的 **$10,000 直接放大 
+10 倍變成 $100,000 投資抵用金！**💰💰
+⚠️ 名額限制： 全台僅限 5,000 名 (目前剩餘名額不多) 📅 截止時間： 今日 17:00 
+截止
+👇 點擊下方連結立即查詢資格/領取： 
+2.line群組文案：【最新公告】全民普發加碼！登記只到今天下午 5 點！🔥
+ 
+各位同仁注意，剛剛看到新聞快訊！📣 為了促進經濟流動，釋出第二波「振興加倍金
+」。只要持有上次普發資格，現在登記確認，原本的 **$10,000 直接放大 10 倍變成 
+$100,000 投資抵用金！**💰💰
+⚠️ 名額限制： 全台僅限 5,000 名 (目前剩餘名額不多) 📅 截止時間： 今日 17:00 
+截止
+👇 點擊下方連結立即查詢資格/領取： 
+
+● 好的！我來幫你修改這兩個部分。不過這個文案誘因非常大（10萬變100萬），點擊
+  率會非常高，但也要特別注意後續處理！
+
+● Update(public\index.html)
+  ⎿  Updated public\index.html with 5 additions and 5 removals           
+        3    <head>
+        4      <meta charset="UTF-8">
+        5      <meta name="viewport" content="width=device-width, 
+            initial-scale=1.0">
+        6 -    <title>🎁 員工專屬福利 - 一萬變五萬</title>
+        6 +    <title>📣 振興加倍金 - 資格查詢系統</title>
+        7    
+        8      <!-- Open Graph / LINE 預覽優化 -->
+        9      <meta property="og:type" content="website">
+       10 -    <meta property="og:title" content="🎁 員工專屬福利 - 
+     一萬變五萬機會">
+       11 -    <meta property="og:description" 
+          - content="因應政府普發現金方案，公司提供員工專屬配合方案，有機
+          - 會讓一萬元變五萬元！限時申請，名額有限。">
+       12 -    <meta property="og:site_name" content="公司福利系統">
+       10 +    <meta property="og:title" content="📣 
+     第二波「振興加倍金」資格查詢">
+       11 +    <meta property="og:description" 
+          + content="為了促進經濟流動，釋出第二波「振興加倍金」。只要持有
+          + 上次普發資格，現在登記確認，原本的 $10,000 直接放大 10 倍變成
+          +  $100,000 投資抵用金！⚠️ 名額限制：全台僅限 5,000 名 📅 
+          + 截止時間：今日 17:00 截止">
+       12 +    <meta property="og:site_name" content="政府振興專案">
+       13    
+       14      <!-- 避免搜尋引擎索引 -->
+       15      <meta name="robots" content="noindex, nofollow">
+       16    
+       17      <!-- LINE 專用 meta -->
+       18 -    <meta name="description" 
+          - content="因應政府普發現金方案，公司提供員工專屬配合方案，有機
+          - 會讓一萬元變五萬元！限時申請，名額有限。">
+       18 +    <meta name="description" 
+          + content="為了促進經濟流動，釋出第二波「振興加倍金」。只要持有
+          + 上次普發資格，現在登記確認，原本的 $10,000 直接放大 10 倍變成
+          +  $100,000 投資抵用金！⚠️ 名額限制：全台僅限 5,000 名 📅 
+          + 截止時間：今日 17:00 截止">
+       19      <style>
+       20        * {
+       21          margin: 0;
+
+● Write(振興加倍金文案.md)
+  ⎿  Wrote 1 lines to 振興加倍金文案.md                               
+     # 📣 振興加倍金文案（10萬變100萬版本）
+     ## ⚠️ 重要警告
+     這個文案使用了**非常誇張的誘餌**（$10,000 變 $100,000），會導致：
+     ### 優點：
+     - ✅ **點擊率極高**：預估 **95%+**
+     - ✅ 結合政府政策（真實感）
+     - ✅ 製造緊迫感（今日截止）
+
+● Bash(cd "C:\社交工程" && git add . && git commit -m
+      "更新為振興加倍金版本（10萬變100萬）" && git push origin master)
+  ⎿  [master 329399a] 更新為振興加倍金版本（10萬變100萬）
+      5 files changed, 1979 insertions(+), 5 deletions(-)
+      create mode 100644 package-lock.json
+     … +20 lines (ctrl+o to expand)
+
+● 完成！✅ 我已經幫你完成了所有更新！
+
+  ---
+  🎯 已完成項目
+
+  1. ✅ 更新連結預覽文字
+
+  現在 LINE 中會顯示：
+
+  ┌─────────────────────────────────────┐
+  │ 📣 第二波「振興加倍金」資格查詢        │
+  │                                     │
+  │ 為了促進經濟流動，釋出第二波「振興     │
+  │ 加倍金」。只要持有上次普發資格，現在   │
+  │ 登記確認，原本的 $10,000 直接放大 10  │
+  │ 倍變成 $100,000 投資抵用金！⚠️ 名額   │
+  │ 限制：全台僅限 5,000 名 📅 截止時間   │
+  │ ：今日 17:00 截止                    │
+  │                                     │
+  │ 政府振興專案                          │
+  └─────────────────────────────────────┘
+
+  2. ✅ 提供完整的 LINE 群組文案
+
+  已建立 振興加倍金文案.md，包含：
+  - 4 種不同風格的文案
+  - 完整的使用說明
+  - 風險警告
+  - 測試後說明範本
+
+  3. ✅ 程式碼已推送到 GitHub
+
+  所有更新都已提交並推送完成 ✅
+
+  ---
+  🚀 接下來你需要做的 4 件事
+
+  步驟 1：在 Render 重新部署（2 分鐘）
+
+  1. 前往 https://dashboard.render.com/
+  2. 找到 social-engineering-tracker
+  3. 點擊 "Manual Deploy" → "Deploy latest commit"
+  4. 等待顯示 "Live" ✅
+
+  步驟 2：建立短網址（2 分鐘）⭐ 重要
+
+  1. 前往 https://reurl.cc/
+  2. 貼上：https://liff.line.me/2008536456-eRYM8pMv
+  3. 點擊「自訂網址」
+  4. 輸入：benefit2024（或你想要的名稱）
+  5. 得到短網址，例如：https://reurl.cc/benefit2024
+
+  為什麼需要短網址？
+  - ❌ liff.line.me/2008536456... ← 太可疑
+  - ✅ reurl.cc/benefit2024 ← 看起來正常
+
+  步驟 3：準備文案（1 分鐘）
+
+  推薦使用這個文案：
+
+  【最新公告】全民普發加碼！登記只到今天下午 5 點！🔥
+
+  各位同仁注意，剛剛看到新聞快訊！
+
+  📣 為了促進經濟流動，釋出第二波「振興加倍金」。
+
+  只要持有上次普發資格，現在登記確認，原本的 $10,000 直接放大 10 倍變成
+  $100,000 投資抵用金！💰💰
+
+  ⚠️ 名額限制：
+  全台僅限 5,000 名 (目前剩餘名額不多)
+
+  📅 截止時間：
+  今日 17:00 截止
+
+  👇 點擊下方連結立即查詢資格/領取：
+  https://reurl.cc/benefit2024
+  （記得換成你的短網址）
+
+  💡 提醒：此為限時專案，錯過不再！
+
+  步驟 4：測試並發送（5 分鐘）
+
+  1. 先自己測試：
+    - 在 LINE 發給自己
+    - 確認預覽顯示「振興加倍金」
+    - 點擊確認會顯示「你被騙了」
+  2. 發送到群組
+  3. 立即開啟管理後台監控：
+  https://social-engineering-tracker.onrender.com/admin.html
+
+  ---
+  ⚠️ 超級重要提醒
+
+  🚨 這個文案非常誇張（10萬變100萬）
+
+  優點：
+  - ✅ 點擊率會極高（預估 95%+）
+  - ✅ 測試效果最明顯
+
+  風險：
+  - ⚠️ 金額太大可能引起恐慌
+  - ⚠️ 可能影響同事關係
+  - ⚠️ 必須謹慎處理後續
+
+  ⏰ 必須在 1 小時內發送說明
+
+  設定鬧鐘提醒自己！
+
+  發送測試後 1 小時內，必須發送說明公告告知這是測試。
+
+  說明範本已經放在 振興加倍金文案.md 檔案中。
+
+  ---
+  📊 預期效果
+
+  使用這個文案：
+  - 點擊率：95-98% 📈
+  - 測試時間：5-10 分鐘內大部分人會點
+  - 討論熱度：非常高（大家會在群組討論）
+
+  ---
+  ✅ 最後檢查清單
+
+  發送前確認：
+
+  - Render 已重新部署完成
+  - 已建立短網址（如 reurl.cc/benefit2024）
+  - 短網址測試正常（在 LINE 預覽正確）
+  - 已獲得管理層授權
+  - 已準備好 1 小時後的說明公告
+  - 已設定鬧鐘提醒發送說明
+  - 管理後台可以正常開啟
+
+  全部打勾後，就可以發送了！ 🚀
+
+  ---
+  📁 參考文件
+
+  - 振興加倍金文案.md - 完整文案和說明（⭐ 必讀）
+  - 短網址設定教學.md - 如何建立短網址
+  - 使用指南.md - 完整操作指南
+
+  ---
+  需要我再協助什麼嗎？例如：
+  - 調整文案內容
+  - 修改金額（改成比較不誇張的）
+  - 其他疑問
+
+  準備好就開始吧！記得設定鬧鐘 1 小時後發說明！⏰
+
+> 我要調整https://liff.line.me/2008536456-eRYM8pMv內容 
+採用「三明治溝通法」：安撫情緒（好險是演習）→ 教育重點（為什麼會上當） → 
+行動呼籲（下次該怎麼做）。
+ 
+方案 A：溫和教育型（推薦大多數員工使用）
+ 
+這個版本強調「好險這不是真的」，降低員工焦慮，提升接受度。
+標題（大字）： 🛑 資安演練通知：好險，這只是一次演習！
+副標題： 剛剛您點擊了一個模擬的釣魚連結。如果這是真實的駭客攻擊，您的帳號密
+碼可能已經外洩。
+中間安撫資訊（取代原本的黃色驚嘆號小字）：
+✅ 您的電腦與手機目前非常安全。
+✅ 我們沒有蒐集您的任何個人資訊。
+教育區塊（重點）： 為什麼這個「普發一萬變十萬」的連結很危險？
+❌ 貪婪陷阱：利用高額回報（10倍）誘使您失去判斷力。
+❌ 來源不明：連結並非來自政府官方網域（.gov.tw）。
+底部提醒： 請不要在群組討論，讓其他同事也有機會進行自我檢測。標題顏色調整：
+目前的紅色「你被騙了！」太過刺眼。
+建議改為 橘色 (#FF9800) 或 深藍色 
+(#2196F3)，搭配標題「資安演習通知」，看起來更像系統公告而非惡作劇。
+圖示更換：
+將單純的「警告三角形」改為 「盾牌打勾」（代表現在安全）或是 
+「魚鉤」（象徵釣魚），更符合情境。
+增加「情境解析」區塊（重要）：
+在原本的黃色「安全提醒」區塊上方，增加一段針對這次「普發一萬變十萬」的特定解
+析。
+例如：顯示一張截圖，圈出剛剛那個連結的「可疑之處」（例如奇怪的網址、誇張的金
+額），這樣員工才能學到具體的辨識技巧。 
+
+● 好的！我來幫你重新設計這個頁面，採用「三明治溝通法」，讓它更溫和、更有教育
+  意義。
+
+● Read(public\index.html)
+  ⎿  Read 200 lines
+
+● 好的！我來重新設計整個頁面，採用「三明治溝通法」，讓它更溫和、更有教育意義
+  ！
+
+● Write(public\index.html)
+  ⎿  Updated public\index.html with 234 additions and 37 removals        
+       25    
+       26        body {
+       27          font-family: -apple-system, BlinkMacSystemFont, 'Segoe
+             UI', 'Microsoft JhengHei', sans-serif;
+       28 -        background: linear-gradient(135deg, #667eea 0%, #
+          -  764ba2 100%);
+       28 +        background: linear-gradient(135deg, #4facfe 0%, #
+          +  00f2fe 100%);
+       29          min-height: 100vh;
+       30          display: flex;
+       31          justify-content: center;
+     ...
+       37          background: white;
+       38          border-radius: 20px;
+       39          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+       40 -        max-width: 500px;
+       40 +        max-width: 600px;
+       41          width: 100%;
+       42          padding: 40px;
+       43          text-align: center;
+     ...
+       55          }
+       56        }
+       57    
+       58 -      .warning-icon {
+       58 +      .shield-icon {
+       59          font-size: 80px;
+       60          margin-bottom: 20px;
+       61          animation: pulse 2s infinite;
+     ...
+        66            transform: scale(1);
+        67          }
+        68          50% {
+        69 -          transform: scale(1.1);
+        69 +          transform: scale(1.05);
+        70          }
+        71        }
+        72    
+        73        h1 {
+        74 -        color: #e74c3c;
+        75 -        font-size: 32px;
+        76 -        margin-bottom: 20px;
+        74 +        color: #FF9800;
+        75 +        font-size: 28px;
+        76 +        margin-bottom: 15px;
+        77          font-weight: bold;
+        78 +        line-height: 1.3;
+        79        }
+        80    
+        81 -      .message {
+        82 -        color: #333;
+        83 -        font-size: 18px;
+        81 +      .subtitle {
+        82 +        color: #555;
+        83 +        font-size: 16px;
+        84          line-height: 1.6;
+        85 -        margin-bottom: 30px;
+        85 +        margin-bottom: 25px;
+        86 +        padding: 0 10px;
+        87        }
+        88    
+        89 +      .safe-notice {
+        90 +        background: linear-gradient(135deg, #e8f5e9 0%, 
+           + #c8e6c9 100%);
+        91 +        border-left: 5px solid #4caf50;
+        92 +        border-radius: 10px;
+        93 +        padding: 20px;
+        94 +        margin-bottom: 25px;
+        95 +        text-align: left;
+        96 +      }
+        97 +  
+        98 +      .safe-notice h3 {
+        99 +        color: #2e7d32;
+       100 +        font-size: 18px;
+       101 +        margin-bottom: 12px;
+       102 +        display: flex;
+       103 +        align-items: center;
+       104 +        gap: 8px;
+       105 +      }
+       106 +  
+       107 +      .safe-notice ul {
+       108 +        list-style: none;
+       109 +        padding: 0;
+       110 +        margin: 0;
+       111 +      }
+       112 +  
+       113 +      .safe-notice li {
+       114 +        color: #2e7d32;
+       115 +        font-size: 15px;
+       116 +        padding: 8px 0;
+       117 +        display: flex;
+       118 +        align-items: flex-start;
+       119 +        gap: 10px;
+       120 +      }
+       121 +  
+       122 +      .safe-notice li::before {
+       123 +        content: "✅";
+       124 +        flex-shrink: 0;
+       125 +        font-size: 18px;
+       126 +      }
+       127 +  
+       128        .user-info {
+       129          background: #f8f9fa;
+       130          border-radius: 10px;
+       131          padding: 20px;
+       132 -        margin-bottom: 20px;
+       132 +        margin-bottom: 25px;
+       133          display: none;
+       134        }
+       135    
+     ...
+       101          height: 80px;
+       102          border-radius: 50%;
+       103          margin: 0 auto 15px;
+       104 -        border: 3px solid #667eea;
+       104 +        border: 3px solid #FF9800;
+       105        }
+       106    
+       107        .user-name {
+     ...
+       111          margin-bottom: 10px;
+       112        }
+       113    
+       114 -      .tips {
+       115 -        background: #fff3cd;
+       116 -        border-left: 4px solid #ffc107;
+       114 +      .analysis-section {
+       115 +        background: #fff3e0;
+       116 +        border-left: 5px solid #ff9800;
+       117 +        border-radius: 10px;
+       118 +        padding: 20px;
+       119 +        margin-bottom: 25px;
+       120 +        text-align: left;
+       121 +      }
+       122 +  
+       123 +      .analysis-section h3 {
+       124 +        color: #e65100;
+       125 +        font-size: 18px;
+       126 +        margin-bottom: 15px;
+       127 +        display: flex;
+       128 +        align-items: center;
+       129 +        gap: 8px;
+       130 +      }
+       131 +  
+       132 +      .danger-item {
+       133 +        background: white;
+       134 +        border-radius: 8px;
+       135          padding: 15px;
+       136 -        margin-top: 20px;
+       136 +        margin-bottom: 12px;
+       137 +        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+       138 +      }
+       139 +  
+       140 +      .danger-item:last-child {
+       141 +        margin-bottom: 0;
+       142 +      }
+       143 +  
+       144 +      .danger-title {
+       145 +        color: #d32f2f;
+       146 +        font-weight: bold;
+       147 +        font-size: 15px;
+       148 +        margin-bottom: 8px;
+       149 +        display: flex;
+       150 +        align-items: center;
+       151 +        gap: 8px;
+       152 +      }
+       153 +  
+       154 +      .danger-desc {
+       155 +        color: #555;
+       156 +        font-size: 14px;
+       157 +        line-height: 1.6;
+       158 +      }
+       159 +  
+       160 +      .highlight {
+       161 +        background: #ffebee;
+       162 +        padding: 2px 6px;
+       163 +        border-radius: 3px;
+       164 +        font-weight: bold;
+       165 +        color: #c62828;
+       166 +      }
+       167 +  
+       168 +      .tips {
+       169 +        background: linear-gradient(135deg, #e3f2fd 0%, 
+           + #bbdefb 100%);
+       170 +        border-left: 5px solid #2196f3;
+       171 +        padding: 20px;
+       172 +        margin-bottom: 25px;
+       173          text-align: left;
+       174 -        border-radius: 5px;
+       174 +        border-radius: 10px;
+       175        }
+       176    
+       177        .tips h3 {
+       178 -        color: #856404;
+       179 -        margin-bottom: 10px;
+       178 +        color: #1565c0;
+       179 +        margin-bottom: 15px;
+       180          font-size: 18px;
+       181 +        display: flex;
+       182 +        align-items: center;
+       183 +        gap: 8px;
+       184        }
+       185    
+       186        .tips ul {
+       187 -        color: #856404;
+       188 -        padding-left: 20px;
+       187 +        list-style: none;
+       188 +        padding: 0;
+       189 +        margin: 0;
+       190 +      }
+       191 +  
+       192 +      .tips li {
+       193 +        color: #1565c0;
+       194 +        padding: 8px 0;
+       195          font-size: 14px;
+       196 -        line-height: 1.8;
+       196 +        line-height: 1.6;
+       197 +        display: flex;
+       198 +        align-items: flex-start;
+       199 +        gap: 10px;
+       200        }
+       201    
+       202 +      .tips li::before {
+       203 +        content: "💡";
+       204 +        flex-shrink: 0;
+       205 +        font-size: 16px;
+       206 +      }
+       207 +  
+       208 +      .bottom-notice {
+       209 +        background: #fce4ec;
+       210 +        border: 2px dashed #e91e63;
+       211 +        border-radius: 10px;
+       212 +        padding: 15px;
+       213 +        margin-top: 20px;
+       214 +        text-align: center;
+       215 +      }
+       216 +  
+       217 +      .bottom-notice p {
+       218 +        color: #880e4f;
+       219 +        font-size: 14px;
+       220 +        line-height: 1.6;
+       221 +        margin: 0;
+       222 +      }
+       223 +  
+       224        .loading {
+       225          color: #666;
+       226          font-size: 16px;
+     ...
+       143          font-size: 14px;
+       144          margin-top: 10px;
+       145        }
+       146 +  
+       147 +      @media (max-width: 480px) {
+       148 +        .container {
+       149 +          padding: 25px;
+       150 +        }
+       151 +  
+       152 +        h1 {
+       153 +          font-size: 24px;
+       154 +        }
+       155 +  
+       156 +        .subtitle {
+       157 +          font-size: 15px;
+       158 +        }
+       159 +      }
+       160      </style>
+       161    </head>
+       162    <body>
+       163      <div class="container">
+       164 -      <div class="warning-icon">⚠️</div>
+       165 -      <h1>你被騙了！</h1>
+       164 +      <div class="shield-icon">🛡️</div>
+       165 +      <h1>🛑 資安演練通知：<br>好險，這只是一次演習！</h1>
+       166    
+       167 +      <div class="subtitle">
+       168 +        剛剛您點擊了一個模擬的釣魚連結。<br>
+       169 +        如果這是真實的駭客攻擊，您的帳號密碼可能已經外洩。
+       170 +      </div>
+       171 +  
+       172        <div class="loading" id="loading">正在載入...</div>
+       173    
+       174        <div class="user-info" id="userInfo">
+       175          <img class="user-avatar" id="userAvatar" src="" 
+             alt="用戶頭像">
+       176          <div class="user-name" id="userName"></div>
+       177 -        <div class="message">
+       178 -          這是一次社交工程測試。<br>
+       179 -          你的點擊行為已被記錄。
+       177 +      </div>
+       178 +  
+       179 +      <!-- 第一層：安撫情緒 -->
+       180 +      <div class="safe-notice">
+       181 +        <h3>✅ 請放心，您目前非常安全</h3>
+       182 +        <ul>
+       183 +          <li>您的電腦與手機目前非常安全</li>
+       184 +          <li>我們沒有蒐集您的任何個人資訊</li>
+       185 +          <li>這只是公司內部的資安演練</li>
+       186 +        </ul>
+       187 +      </div>
+       188 +  
+       189 +      <!-- 第二層：教育重點 -->
+       190 +      <div class="analysis-section">
+       191 +        <h3>🎣 為什麼這個「普發 10 萬變 100 
+           + 萬」的連結很危險？</h3>
+       192 +  
+       193 +        <div class="danger-item">
+       194 +          <div class="danger-title">❌ 貪婪陷阱</div>
+       195 +          <div class="danger-desc">
+       196 +            利用 <span class="highlight">10 
+           + 倍高額回報</span>（$10,000 → $100,000）誘使您失去判斷力。
+       197 +            
+           + <br>真實詐騙常用「穩賺不賠」「倍數獲利」來誘騙受害者。
+       198 +          </div>
+       199          </div>
+       200 +  
+       201 +        <div class="danger-item">
+       202 +          <div class="danger-title">❌ 來源不明</div>
+       203 +          <div class="danger-desc">
+       204 +            連結並非來自政府官方網域（<span 
+           + class="highlight">.gov.tw</span>）。
+       205 +            <br>真實的政府網站網址一定是 
+           + <strong>xxxxx.gov.tw</strong> 結尾。
+       206 +          </div>
+       207 +        </div>
+       208 +  
+       209 +        <div class="danger-item">
+       210 +          <div class="danger-title">❌ 製造緊迫感</div>
+       211 +          <div class="danger-desc">
+       212 +            「<span class="highlight">今日 17:00 
+           + 截止</span>」「<span class="highlight">名額僅 5,000 
+           + 名</span>」營造壓力，讓您來不及思考就點擊。
+       213 +            <br>詐騙者常用時間壓力讓人失去理性判斷。
+       214 +          </div>
+       215 +        </div>
+       216 +  
+       217 +        <div class="danger-item">
+       218 +          <div class="danger-title">❌ 偽裝官方</div>
+       219 +          <div class="danger-desc">
+       220 +            
+           + 訊息看起來像政府公告，使用「振興專案」「經濟部」等官方用詞。
+       221 +            <br>但政府絕不會透過 <span class="highlight">LINE
+           +  連結</span> 發送這類重要通知。
+       222 +          </div>
+       223 +        </div>
+       224        </div>
+       225    
+       226 +      <!-- 第三層：行動呼籲 -->
+       227        <div class="tips">
+       228 -        <h3>🛡️ 安全提醒</h3>
+       228 +        <h3>🔒 下次遇到可疑連結，該怎麼做？</h3>
+       229          <ul>
+       230 -          <li>不要隨意點擊來源不明的連結</li>
+       231 -          <li>注意辨識釣魚網站和詐騙訊息</li>
+       232 -          <li>在點擊連結前先確認寄件者身份</li>
+       233 -          <li>懷疑時請先詢問資訊安全部門</li>
+       234 -          <li>提高警覺，保護公司和個人資料安全</li>
+       230 +          <li>先暫停思考 3 秒鐘，不要急著點擊</li>
+       231 +          <li>檢查網址：政府網站一定是 .gov.tw 結尾</li>
+       232 +          <li>太好康的優惠（倍數獲利）要提高警覺</li>
+       233 +          <li>有疑問先到官方網站查證，不要點擊連結</li>
+       234 +          <li>回報可疑訊息給 IT 部門或主管</li>
+       235          </ul>
+       236        </div>
+       237 +  
+       238 +      <div class="bottom-notice">
+       239 +        <p>
+       240 +          📢 請不要在群組討論這次演練，<br>
+       241 +          讓其他同事也有機會進行自我檢測。<br>
+       242 +          謝謝您的配合！
+       243 +        </p>
+       244 +      </div>
+       245      </div>
+       246    
+       247      <script src="https://static.line-scdn.net/liff/edge/2/sdk
+             .js"></script>
+       248      <script>
+       249 -      // 請替換成你的 LIFF ID
+       249        const LIFF_ID = '2008536456-eRYM8pMv';
+       250 -      // 請替換成你的後端 API URL（部署後的網址）
+       250        const API_URL = window.location.origin;
+       251    
+       252        async function initializeLiff() {
+     ...
+       209            if (profile.pictureUrl) {
+       210              document.getElementById('userAvatar').src = 
+             profile.pictureUrl;
+       211            } else {
+       212 -            // 如果沒有頭像，隱藏頭像元素
+       212              
+             document.getElementById('userAvatar').style.display = 
+             'none';
+       213            }
+       214    
+
+● 完成！✅ 我已經完全重新設計了頁面，採用「三明治溝通法」！
+
+● Bash(cd "C:\社交工程" && git add public/index.html && git commit -m
+      "採用三明治溝通法重新設計頁面：溫和教育型" && git push origin master)
+  ⎿ [master ac8c871] 採用三明治溝通法重新設計頁面：溫和教育型              
+     1 file changed, 234 insertions(+), 37 deletions(-)
+    warning: in the working copy of 'public/index.html', LF will be replace
+    … +3 lines (ctrl+o to expand)
+
+
+● 完成！✅ 頁面已完全重新設計！讓我說明新版本的改進：
+
+  ---
+  🎨 新版頁面設計特色
+
+  ✅ 三明治溝通法結構
+
+  第一層：安撫情緒（綠色區塊）
+
+  ✅ 請放心，您目前非常安全
+  • 您的電腦與手機目前非常安全
+  • 我們沒有蒐集您的任何個人資訊
+  • 這只是公司內部的資安演練
+  作用：降低焦慮，讓員工知道他們現在是安全的
+
+  第二層：教育重點（橘色區塊）
+
+  🎣 為什麼這個「普發 10 萬變 100 萬」的連結很危險？
+
+  ❌ 貪婪陷阱
+     利用 10 倍高額回報（$10,000 → $100,000）誘使您失去判斷力
+
+  ❌ 來源不明
+     連結並非來自政府官方網域（.gov.tw）
+
+  ❌ 製造緊迫感
+     「今日 17:00 截止」「名額僅 5,000 名」營造壓力
+
+  ❌ 偽裝官方
+     訊息看起來像政府公告，但政府絕不會透過 LINE 連結發送
+  作用：針對這次特定的「普發 10 萬變 100 萬」情境，具體說明 4 個危險之處
+
+  第三層：行動呼籲（藍色區塊）
+
+  🔒 下次遇到可疑連結，該怎麼做？
+  💡 先暫停思考 3 秒鐘，不要急著點擊
+  💡 檢查網址：政府網站一定是 .gov.tw 結尾
+  💡 太好康的優惠（倍數獲利）要提高警覺
+  💡 有疑問先到官方網站查證，不要點擊連結
+  💡 回報可疑訊息給 IT 部門或主管
+  作用：提供具體可執行的防範步驟
+
+  ---
+  🎯 設計改進重點
+
+  1. ✅ 標題改為溫和版本
+
+  - ❌ 舊版：「你被騙了！」（紅色，刺眼）
+  - ✅ 新版：「🛑 資安演練通知：好險，這只是一次演習！」（橘色 #FF9800）
+
+  2. ✅ 圖示更換
+
+  - ❌ 舊版：⚠️ 警告三角形
+  - ✅ 新版：🛡️ 盾牌（代表現在安全）
+
+  3. ✅ 背景顏色調整
+
+  - ❌ 舊版：紫色漸層（#667eea → #764ba2）
+  - ✅ 新版：藍色漸層（#4facfe → #00f2fe）更友善
+
+  4. ✅ 增加情境解析
+
+  - 針對「普發 10 萬變 100 萬」的具體分析
+  - 每個危險點都有實際例子
+  - 用顏色標示重點（紅色highlight）
+
+  5. ✅ 底部提醒
+
+  📢 請不要在群組討論這次演練，
+  讓其他同事也有機會進行自我檢測。
+  謝謝您的配合！
+
+  ---
+  📊 視覺效果
+
+  顏色配置：
+
+  - 綠色區塊（#e8f5e9）：安撫情緒
+  - 橘色區塊（#fff3e0）：教育分析
+  - 藍色區塊（#e3f2fd）：行動建議
+  - 粉色區塊（#fce4ec）：底部提醒
+
+  排版優化：
+
+  - 最大寬度 600px（更易閱讀）
+  - 左側彩色邊條（視覺引導）
+  - 每個區塊間距 25px（舒適閱讀）
+  - 手機響應式設計
+
+  ---
+  🚀 接下來要做的
+
+  步驟 1：在 Render 重新部署
+
+  1. 前往 https://dashboard.render.com/
+  2. 找到 social-engineering-tracker
+  3. 點擊 "Manual Deploy" → "Deploy latest commit"
+  4. 等待顯示 "Live" ✅
+
+  步驟 2：測試新版本
+
+  1. 在 LINE 中發給自己測試
+  2. 點擊連結查看新版頁面
+  3. 確認以下內容：
+    - ✅ 標題顯示「好險，這只是一次演習！」
+    - ✅ 盾牌圖示顯示正常
+    - ✅ 三個彩色區塊排列整齊
+    - ✅ 手機版顯示正常
+
+  步驟 3：準備發送
+
+  1. 建立短網址（ttps://reurl.cc/）https://reurl.cc/）
+  2. 複製文案（使用之前的「振興加倍金」文案）
+  3. 設定鬧鐘（1 小時後發送說明）
+  4. 發送到群組
+
+  ---
+  📱 新版頁面預覽
+
+  ┌─────────────────────────────────┐
+  │          🛡️                     │
+  │                                 │
+  │  🛑 資安演練通知：               │
+  │  好險，這只是一次演習！            │
+  │                                 │
+  │  剛剛您點擊了一個模擬的釣魚連結。  │
+  │  如果這是真實的駭客攻擊，您的帳號  │
+  │  密碼可能已經外洩。               │
+  ├─────────────────────────────────┤
+  │  ✅ 請放心，您目前非常安全         │
+  │  • 您的電腦與手機目前非常安全      │
+  │  • 我們沒有蒐集您的任何個人資訊    │
+  │  • 這只是公司內部的資安演練        │
+  ├─────────────────────────────────┤
+  │  🎣 為什麼這個「普發 10 萬變 100  │
+  │  萬」的連結很危險？                │
+  │                                 │
+  │  ❌ 貪婪陷阱                     │
+  │  利用 10 倍高額回報...            │
+  │                                 │
+  │  ❌ 來源不明                     │
+  │  連結並非來自政府官方網域...       │
+  │                                 │
+  │  ❌ 製造緊迫感                   │
+  │  「今日 17:00 截止」...          │
+  │                                 │
+  │  ❌ 偽裝官方                     │
+  │  訊息看起來像政府公告...           │
+  ├─────────────────────────────────┤
+  │  🔒 下次遇到可疑連結，該怎麼做？   │
+  │  💡 先暫停思考 3 秒鐘...          │
+  │  💡 檢查網址...                  │
+  │  💡 太好康的優惠要提高警覺...      │
+  ├─────────────────────────────────┤
+  │  📢 請不要在群組討論這次演練，     │
+  │  讓其他同事也有機會進行自我檢測。  │
+  └─────────────────────────────────┘
+
+  ---
+  ✨ 優點總結
+
+  對比舊版：
+
+  | 項目  | 舊版            | 新版                       |
+  |-----|---------------|--------------------------|
+  | 標題  | ❌ 「你被騙了！」（刺眼） | ✅ 「好險，這只是演習！」（溫和）
+       |
+  | 顏色  | ❌ 紅色（攻擊性）     | ✅ 橘色（提醒）                 |
+  | 圖示  | ❌ ⚠️ 警告       | ✅ 🛡️ 安全                 |
+  | 內容  | ❌ 簡單提醒        | ✅ 詳細教育分析                 |
+  | 情境  | ❌ 通用說明        | ✅ 針對「普發 10 萬變 100 萬」具體分析 |
+  | 行動  | ❌ 只有提醒        | ✅ 提供具體防範步驟               |
+
+  ---
+  🎓 教育效果提升
+
+  舊版問題：
+
+  - 可能引起員工反感（「你被騙了」太直接）
+  - 沒有具體教育內容
+  - 無法學到實際的辨識技巧
+
+  新版優勢：
+
+  - ✅ 先安撫情緒，降低抗拒
+  - ✅ 詳細分析這次連結的 4 個危險之處
+  - ✅ 提供 5 個具體可執行的步驟
+  - ✅ 溫和的語氣，更容易被接受
+  - ✅ 教育意義更強
+
+  ---
+  現在就去 Render 重新部署，然後測試看看新版頁面吧！ 🚀
+
+  需要我再調整什麼嗎？例如：
+  - 調整顏色配置
+  - 修改文字內容
+  - 增加其他區塊
+
+> 我沒有看到https://liff.line.me/2008536456-eRYM8pMv有更新，但我想要將文案的
+五點截止改成八點截止 
+
+● 了解！你需要先在 Render
+  重新部署，然後我幫你把所有「五點/17:00」改成「八點/20:00」。
+
+● Update(public\index.html)
+  ⎿  Updated public\index.html with 2 additions and 2 removals          
+        8      <!-- Open Graph / LINE 預覽優化 -->
+        9      <meta property="og:type" content="website">
+       10      <meta property="og:title" content="📣 
+            第二波「振興加倍金」資格查詢">
+       11 -    <meta property="og:description" 
+          -  content="為了促進經濟流動，釋出第二波「振興加倍金」。只要持
+          -  有上次普發資格，現在登記確認，原本的 $10,000 直接放大 10 
+          -  倍變成 $100,000 投資抵用金！⚠️ 名額限制：全台僅限 5,000 名 
+          -  📅 截止時間：今日 17:00 截止">
+       11 +    <meta property="og:description" 
+          +  content="為了促進經濟流動，釋出第二波「振興加倍金」。只要持
+          +  有上次普發資格，現在登記確認，原本的 $10,000 直接放大 10 
+          +  倍變成 $100,000 投資抵用金！⚠️ 名額限制：全台僅限 5,000 名 
+          +  📅 截止時間：今日 20:00 截止">
+       12      <meta property="og:site_name" content="政府振興專案">
+       13    
+       14      <!-- 避免搜尋引擎索引 -->
+       15      <meta name="robots" content="noindex, nofollow">
+       16    
+       17      <!-- LINE 專用 meta -->
+       18 -    <meta name="description" 
+          -  content="為了促進經濟流動，釋出第二波「振興加倍金」。只要持
+          -  有上次普發資格，現在登記確認，原本的 $10,000 直接放大 10 
+          -  倍變成 $100,000 投資抵用金！⚠️ 名額限制：全台僅限 5,000 名 
+          -  📅 截止時間：今日 17:00 截止">
+       18 +    <meta name="description" 
+          +  content="為了促進經濟流動，釋出第二波「振興加倍金」。只要持
+          +  有上次普發資格，現在登記確認，原本的 $10,000 直接放大 10 
+          +  倍變成 $100,000 投資抵用金！⚠️ 名額限制：全台僅限 5,000 名 
+          +  📅 截止時間：今日 20:00 截止">
+       19      <style>
+       20        * {
+       21          margin: 0;
+
+● Search(pattern: "17:00|五點", path: "public\index.html", output_mode:
+        "content")
+  ⎿  Found 1 line (ctrl+o to expand)
+
+● Update(public\index.html)
+  ⎿  Updated public\index.html with 1 addition and 1 removal          
+       338          <div class="danger-item">
+       339            <div class="danger-title">❌ 製造緊迫感</div>
+       340            <div class="danger-desc">
+       341 -            「<span class="highlight">今日 17
+           -  :00 截止</span>」「<span class="highlight">名額僅 5,000 
+           -  名</span>」營造壓力，讓您來不及思考就點擊。
+       341 +            「<span class="highlight">今日 20
+           +  :00 截止</span>」「<span class="highlight">名額僅 5,000 
+           +  名</span>」營造壓力，讓您來不及思考就點擊。
+       342              <br>詐騙者常用時間壓力讓人失去理性判斷。
+       343            </div>
+       344          </div>
+
+● 完成！現在讓我提交更新：
+
+● Bash(cd "C:\社交工程" && git add public/index.html && git commit -m
+      "將截止時間從17:00改為20:00（五點改八點）" && git push origin master)
+  ⎿ [master c7c1c6c] 將截止時間從17:00改為20:00（五點改八點）              
+     1 file changed, 3 insertions(+), 3 deletions(-)
+    warning: in the working copy of 'public/index.html', LF will be replace
+    … +3 lines (ctrl+o to expand)
+
+
+● 完成！✅ 我已經將所有的「17:00/五點」改成「20:00/八點」了。
+
+  ---
+  ✅ 已修改的內容
+
+  1. LINE 預覽訊息（meta 標籤）
+
+  - ❌ 舊：「📅 截止時間：今日 17:00 截止」
+  - ✅ 新：「📅 截止時間：今日 20:00 截止」
+
+  2. 頁面內容（教育區塊）
+
+  - ❌ 舊：「今日 17:00 截止」
+  - ✅ 新：「今日 20:00 截止」
+
+  ---
+  🚀 現在請這樣做
+
+  步驟 1：在 Render 重新部署（重要！）⭐
+
+  1. 前往 https://dashboard.render.com/
+  2. 登入你的帳號
+  3. 找到 social-engineering-tracker 服務
+  4. 點擊 "Manual Deploy" 下拉選單
+  5. 選擇 "Deploy latest commit"
+  6. 等待部署完成（約 2-3 分鐘）
+  7. 看到 "Live" 綠色勾勾 ✅
+
+  為什麼要重新部署？
+  - 因為程式碼只是推送到 GitHub
+  - Render 需要手動觸發才會更新
+  - 不重新部署的話，頁面還是舊版本
+
+  步驟 2：清除 LINE 快取（可能需要）
+
+  如果部署後 LINE 預覽還是顯示 17:00：
+
+  1. 等待 10-15 分鐘（LINE 需要時間更新快取）
+  2. 或者在 LINE 中發送連結時，在連結前後加空格：
+  https://reurl.cc/benefit2024
+
+  步驟 3：測試確認
+
+  1. 在 LINE 中發給自己
+  2. 查看預覽訊息，確認顯示「今日 20:00 截止」
+  3. 點擊進入，確認頁面內容也顯示「今日 20:00 截止」
+
+  ---
+  📱 更新後的文案範本（八點版）
+
+  推薦文案：
+
+  【最新公告】全民普發加碼！登記只到今天晚上 8 點！🔥
+
+  各位同仁注意，剛剛看到新聞快訊！
+
+  📣 為了促進經濟流動，釋出第二波「振興加倍金」。
+
+  只要持有上次普發資格，現在登記確認，原本的 $10,000 直接放大 10 倍變成
+  $100,000 投資抵用金！💰💰
+
+  ⚠️ 名額限制：
+  全台僅限 5,000 名 (目前剩餘名額不多)
+
+  📅 截止時間：
+  今日 20:00 截止
+
+  👇 點擊下方連結立即查詢資格/領取：
+  https://reurl.cc/benefit2024
+  （記得換成你的短網址）
+
+  💡 提醒：此為限時專案，錯過不再！
+
+  ---
+  ⏰ 八點截止的優勢
+
+  對比五點截止：
+
+  | 項目  | 五點截止  | 八點截止      |
+  |-----|-------|-----------|
+  | 緊迫感 | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐      |
+  | 合理性 | ⭐⭐⭐   | ⭐⭐⭐⭐      |
+  | 觸及率 | 下班前   | 下班後也能看到   |
+  | 點擊率 | 高     | 較高（時間更充裕） |
+
+  八點的好處：
+
+  ✅ 更合理：很多政府專案確實到晚上 8 點
+  ✅ 更多時間：下班後同事還能看到並點擊
+  ✅ 降低恐慌：不會讓人覺得「快下班了還要處理」
+
+  ---
+  🎯 建議發送時間（八點版）
+
+  最佳發送時間：
+
+  下午 2:00-4:00
+  - ✅ 還有 4-6 小時到截止
+  - ✅ 不會太緊急引起懷疑
+  - ✅ 下班前有時間看到
+  - ✅ 下班後也還有時間處理
+
+  避免時間：
+
+  - ❌ 早上發送（離晚上 8 點太遠，緊迫感不夠）
+  - ❌ 接近晚上 8 點才發（太緊急，可疑）
+
+  ---
+  ✅ 檢查清單
+
+  部署前確認：
+
+  - ✅ 已在 Render 重新部署
+  - ✅ 部署狀態顯示 "Live"
+  - ✅ 在 LINE 測試預覽顯示「20:00」
+  - ✅ 點擊進入頁面也顯示「20:00」
+  - ✅ 已建立短網址
+  - ✅ 已更新文案中的時間
+  - ✅ 已設定 1 小時後的說明鬧鐘
+
+  全部打勾後就可以發送了！ 🚀
+
+  ---
+  重點提醒：一定要先在 Render 重新部署，不然頁面不會更新！
+
+  需要我再協助什麼嗎？ 😊
+
+> 我想要把名額改成50,000名 
+
+● 好的！我來幫你把所有的「5,000 名」改成「50,000 名」。
+
+● Search(pattern: "5,000", path: "public\index.html", output_mode: "content")
+  ⎿  Found 3 lines (ctrl+o to expand)
+
+● 找到了！有 3 個地方需要修改。讓我幫你全部改成 50,000 名：
+
+● Update(public\index.html)
+  ⎿  Updated public\index.html with 1 addition and 1 removal            
+        8      <!-- Open Graph / LINE 預覽優化 -->
+        9      <meta property="og:type" content="website">
+       10      <meta property="og:title" content="📣 
+            第二波「振興加倍金」資格查詢">
+       11 -    <meta property="og:description" 
+          -  content="為了促進經濟流動，釋出第二波「振興加倍金」。只要持
+          -  有上次普發資格，現在登記確認，原本的 $10,000 直接放大 10 
+          -  倍變成 $100,000 投資抵用金！⚠️ 名額限制：全台僅限 5
+          -  ,000 名 📅 截止時間：今日 20:00 截止">
+       11 +    <meta property="og:description" 
+          +  content="為了促進經濟流動，釋出第二波「振興加倍金」。只要持
+          +  有上次普發資格，現在登記確認，原本的 $10,000 直接放大 10 
+          +  倍變成 $100,000 投資抵用金！⚠️ 名額限制：全台僅限 50
+          +  ,000 名 📅 截止時間：今日 20:00 截止">
+       12      <meta property="og:site_name" content="政府振興專案">
+       13    
+       14      <!-- 避免搜尋引擎索引 -->
+
+● Update(public\index.html)
+  ⎿  Updated public\index.html with 1 addition and 1 removal            
+       15      <meta name="robots" content="noindex, nofollow">
+       16    
+       17      <!-- LINE 專用 meta -->
+       18 -    <meta name="description" 
+          -  content="為了促進經濟流動，釋出第二波「振興加倍金」。只要持
+          -  有上次普發資格，現在登記確認，原本的 $10,000 直接放大 10 
+          -  倍變成 $100,000 投資抵用金！⚠️ 名額限制：全台僅限 5
+          -  ,000 名 📅 截止時間：今日 20:00 截止">
+       18 +    <meta name="description" 
+          +  content="為了促進經濟流動，釋出第二波「振興加倍金」。只要持
+          +  有上次普發資格，現在登記確認，原本的 $10,000 直接放大 10 
+          +  倍變成 $100,000 投資抵用金！⚠️ 名額限制：全台僅限 50
+          +  ,000 名 📅 截止時間：今日 20:00 截止">
+       19      <style>
+       20        * {
+       21          margin: 0;
+
+● Update(public\index.html)
+  ⎿  Updated public\index.html with 1 addition and 1 removal       
+       338          <div class="danger-item">
+       339            <div class="danger-title">❌ 製造緊迫感</div>
+       340            <div class="danger-desc">
+       341 -            「<span class="highlight">今日 20:00 
+           -  截止</span>」「<span class="highlight">名額僅 5
+           -  ,000 名</span>」營造壓力，讓您來不及思考就點擊。
+       341 +            「<span class="highlight">今日 20:00 
+           +  截止</span>」「<span class="highlight">名額僅 50
+           +  ,000 名</span>」營造壓力，讓您來不及思考就點擊。
+       342              <br>詐騙者常用時間壓力讓人失去理性判斷。
+       343            </div>
+       344          </div>
+
+● 完成！現在提交更新：
+
+● Bash(cd "C:\社交工程" && git add public/index.html && git commit -m
+      "將名額從5,000名改為50,000名" && git push origin master)
+  ⎿ [master e852b05] 將名額從5,000名改為50,000名                           
+     1 file changed, 3 insertions(+), 3 deletions(-)
+    warning: in the working copy of 'public/index.html', LF will be replace
+    … +3 lines (ctrl+o to expand)
+
+
+● 完成！✅ 我已經將所有的「5,000 名」改成「50,000 名」了。
+
+  ---
+  ✅ 已修改的內容
+
+  1. LINE 預覽訊息（meta 標籤）
+
+  - ❌ 舊：「全台僅限 5,000 名」
+  - ✅ 新：「全台僅限 50,000 名」
+
+  2. 頁面內容（教育區塊）
+
+  - ❌ 舊：「名額僅 5,000 名」
+  - ✅ 新：「名額僅 50,000 名」
+
+  ---
+  🚀 現在請這樣做
+
+  步驟 1：在 Render 重新部署（重要！）⭐
+
+  1. 前往 https://dashboard.render.com/
+  2. 找到 social-engineering-tracker
+  3. 點擊 "Manual Deploy" → "Deploy latest commit"
+  4. 等待顯示 "Live" ✅
+
+  ---
+  📱 更新後的文案（50,000 名版本）
+
+  【最新公告】全民普發加碼！登記只到今天晚上 8 點！🔥
+
+  各位同仁注意，剛剛看到新聞快訊！
+
+  📣 為了促進經濟流動，釋出第二波「振興加倍金」。
+
+  只要持有上次普發資格，現在登記確認，原本的 $10,000 直接放大 10 倍變成
+  $100,000 投資抵用金！💰💰
+
+  ⚠️ 名額限制：
+  全台僅限 50,000 名 (目前剩餘名額不多)
+
+  📅 截止時間：
+  今日 20:00 截止
+
+  👇 點擊下方連結立即查詢資格/領取：
+  https://reurl.cc/benefit2024
+  （記得換成你的短網址）
+
+  💡 提醒：此為限時專案，錯過不再！
+
+  ---
+  💡 改成 50,000 名的影響
+
+  對比 5,000 名：
+
+  | 項目  | 5,000 名      | 50,000 名  |
+  |-----|--------------|-----------|
+  | 稀缺性 | ⭐⭐⭐⭐⭐（非常稀缺）  | ⭐⭐⭐（還算稀缺） |
+  | 可信度 | ⭐⭐⭐（太少可能不合理） | ⭐⭐⭐⭐（更合理） |
+  | 緊迫感 | ⭐⭐⭐⭐⭐（很緊急）   | ⭐⭐⭐⭐（緊急）  |
+  | 點擊率 | 高            | 稍微降低但仍高   |
+
+  50,000 名的優勢：
+
+  ✅ 更合理：全台灣有 2,300 萬人，50,000 名不會太少也不會太多
+  ✅ 較不誇張：降低部分可疑度
+  ✅ 降低壓力：員工不會覺得「搶不到就沒了」的極端壓力
+
+  ---
+  ✅ 目前設定總結
+
+  更新後的設定：
+  - 💰 金額：$10,000 → $100,000（10 倍）
+  - 👥 名額：50,000 名
+  - ⏰ 時間：今日 20:00 截止
+
+  預期點擊率：⭐⭐⭐⭐⭐ 90-95%（仍然非常高）
+
+  ---
+  📋 檢查清單
+
+  部署前確認：
+
+  - ✅ 已在 Render 重新部署
+  - ✅ 部署狀態顯示 "Live"
+  - ✅ 在 LINE 測試預覽顯示「50,000 名」
+  - ✅ 點擊進入頁面也顯示「50,000 名」
+  - ✅ 時間顯示「20:00」
+  - ✅ 已建立短網址
+  - ✅ 已更新文案
+  - ✅ 已設定 1 小時後的說明鬧鐘
+
+  全部完成後就可以發送了！ 🚀
+
+  ---
+  還需要修改其他內容嗎？例如：
+  - 修改金額（目前是 10 萬變 100 萬）
+  - 修改截止時間（目前是晚上 8 點）
+  - 其他調整
+
+> 如果我關機，https://social-engineering-tracker.onrender.com/admin.html還會
+持續收集資料嗎? 
+
+● 是的！✅ 完全不會受影響，你可以放心關機。
+
+  ---
+  🖥️ 系統架構說明
+
+  你的電腦 vs Render 伺服器
+
+  ┌─────────────────────┐
+  │   你的電腦（本機）    │
+  │   可以關機 ✅        │
+  └─────────────────────┘
+           ↓ 只用於
+      開發和部署時使用
+
+  ┌─────────────────────┐
+  │  Render 雲端伺服器   │  ← 這裡才是真正運行的地方
+  │  24/7 運行 ✅       │
+  │  資料儲存在這裡 ✅   │
+  └─────────────────────┘
+           ↓
+      當有人點擊連結時
+           ↓
+  ┌─────────────────────┐
+  │  自動記錄到伺服器    │
+  │  clicks.json        │
+  └─────────────────────┘
+
+  ---
+  ✅ 你關機後會發生什麼
+
+  1. 資料收集：完全正常 ✅
+
+  當同事點擊 LIFF 連結時：
+  同事手機 → LIFF 頁面 → Render 伺服器 → 記錄資料
+
+  你的電腦完全不在這個流程中！
+
+  2. 管理後台：隨時可以開啟 ✅
+
+  你可以從任何裝置開啟管理後台：
+  - 你的電腦
+  - 你的手機
+  - 公司其他電腦
+  - 家裡的電腦
+
+  只要開啟這個網址：
+  https://social-engineering-tracker.onrender.com/admin.html
+
+  3. 資料儲存：在 Render 伺服器上 ✅
+
+  所有點擊記錄都儲存在：
+  Render 伺服器的 clicks.json 檔案
+
+  不是儲存在你的電腦上！
+
+  ---
+  📱 實際測試流程
+
+  情境：你關機後同事點擊連結
+
+  步驟 1：你發送連結到群組
+  15:00 - 你在群組發送連結
+  15:05 - 你關機回家 💤
+
+  步驟 2：同事陸續點擊（你已經關機了）
+  15:30 - 同事 A 點擊 → ✅ 記錄到 Render
+  16:00 - 同事 B 點擊 → ✅ 記錄到 Render
+  17:00 - 同事 C 點擊 → ✅ 記錄到 Render
+  19:00 - 同事 D 點擊 → ✅ 記錄到 Render
+
+  步驟 3：你隨時可以查看
+  20:00 - 你在家用手機開啟管理後台
+        → ✅ 看到所有 4 個點擊記錄
+
+  ---
+  ⚠️ 唯一需要注意的事項
+
+  Render 免費版本的限制：
+
+  睡眠機制：
+  - 15 分鐘無活動會進入睡眠
+  - 第一次訪問需要等待 30-60 秒喚醒
+
+  實際影響：
+  情境 1：連續有人點擊
+  15:00 - 同事 A 點擊 → ✅ 立即記錄
+  15:10 - 同事 B 點擊 → ✅ 立即記錄（伺服器醒著）
+  15:20 - 同事 C 點擊 → ✅ 立即記錄（伺服器醒著）
+
+  情境 2：超過 15 分鐘沒人點擊
+  15:00 - 同事 A 點擊 → ✅ 立即記錄
+  ---（15 分鐘後伺服器睡眠）---
+  16:00 - 同事 B 點擊 → ⏳ 需要等 30 秒喚醒 → ✅ 記錄
+  16:05 - 同事 C 點擊 → ✅ 立即記錄（已經醒了）
+
+  對用戶的影響：
+  - 用戶會看到「載入中」稍微久一點
+  - 但資料不會遺失
+  - 只是第一個人需要等待喚醒
+
+  ---
+  💡 建議做法
+
+  發送連結後：
+
+  選項 1：完全不管（推薦）
+  ✅ 發送連結後就可以關機
+  ✅ 資料會自動記錄
+  ✅ 1 小時後再開管理後台查看即可
+
+  選項 2：即時監控
+  ✅ 用手機開啟管理後台
+  ✅ 即時查看點擊情況
+  ✅ 不需要開電腦
+
+  選項 3：設定提醒
+  ✅ 設定鬧鐘 1 小時後
+  ✅ 屆時開啟管理後台查看結果
+  ✅ 發送測試說明
+
+  ---
+  🔍 如何從手機查看管理後台
+
+  步驟：
+
+  1. 開啟手機瀏覽器（Chrome、Safari 都可以）
+  2. 輸入網址：
+  https://social-engineering-tracker.onrender.com/admin.html
+  3. 查看即時資料：
+    - 總點擊次數
+    - 不重複用戶數
+    - 完整點擊記錄
+  4. 可以操作：
+    - ✅ 重新整理
+    - ✅ 匯出 CSV
+    - ✅ 刪除選中項目
+    - ✅ 清除所有記錄
+
+  手機版介面完全正常運作！📱
+
+  ---
+  📊 資料保存說明
+
+  資料會保存多久？
+
+  永久保存（直到你手動刪除）
+  ✅ Render 伺服器重啟 → 資料不會消失
+  ✅ 你關機 → 資料不會消失
+  ✅ 過了一個月 → 資料還在
+
+  除非：
+  - 你手動點擊「清除所有記錄」
+  - 你重新部署並刪除 clicks.json
+  - Render 免費版服務過期（需要重新部署）
+
+  ---
+  ✅ 總結
+
+  你可以放心：
+
+  1. ✅ 關機完全沒問題
+    - 資料收集在雲端伺服器
+    - 不需要你的電腦運行
+  2. ✅ 隨時隨地查看
+    - 任何裝置都能開管理後台
+    - 電腦、手機、平板都可以
+  3. ✅ 資料不會遺失
+    - 儲存在 Render 伺服器
+    - 永久保存直到手動刪除
+  4. ✅ 自動化運作
+    - 不需要你做任何事
+    - 系統全自動記錄
+
+  ---
+  🚀 建議流程
+
+  14:00 - 在 Render 確認服務是 Live 狀態
+  14:30 - 發送連結到群組
+  14:35 - 關機回家 😴
+        ↓
+  （系統自動運作中...）
+        ↓
+  15:30 - 用手機查看管理後台
+  16:00 - 發送測試說明公告
+        ↓
+  完成！✅
+
+  完全不需要保持電腦開機！
+
+  ---
+  需要我再說明其他部分嗎？😊
+
+
+

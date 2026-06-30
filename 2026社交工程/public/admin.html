@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>社交工程測試 - 管理後台</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft JhengHei', sans-serif;
+      background: #f5f5f5;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    header {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-card h3 {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .stat-value {
+      font-size: 36px;
+      font-weight: bold;
+      color: #667eea;
+    }
+
+    .controls {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: #667eea;
+      color: white;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: #5568d3;
+    }
+
+    .btn-danger {
+      background: #e74c3c;
+      color: white;
+    }
+
+    .btn-danger:hover:not(:disabled) {
+      background: #c0392b;
+    }
+
+    .btn-warning {
+      background: #f39c12;
+      color: white;
+    }
+
+    .btn-warning:hover:not(:disabled) {
+      background: #e67e22;
+    }
+
+    .selection-info {
+      color: #666;
+      font-size: 14px;
+      margin-left: auto;
+    }
+
+    .table-container {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .table-scroll {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 900px;
+    }
+
+    thead {
+      background: #667eea;
+      color: white;
+    }
+
+    th, td {
+      padding: 15px;
+      text-align: left;
+    }
+
+    th {
+      font-weight: 600;
+      font-size: 14px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid #eee;
+    }
+
+    tbody tr:hover {
+      background: #f8f9fa;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      vertical-align: middle;
+      margin-right: 10px;
+    }
+
+    .no-data {
+      padding: 40px;
+      text-align: center;
+      color: #999;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #666;
+    }
+
+    .timestamp {
+      color: #666;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .user-agent {
+      max-width: 300px;
+      font-size: 12px;
+      color: #999;
+      word-break: break-all;
+      line-height: 1.4;
+    }
+
+    .checkbox-cell {
+      width: 50px;
+      text-align: center;
+    }
+
+    .checkbox-cell input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    .user-id {
+      max-width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 13px;
+    }
+
+    .display-name {
+      min-width: 120px;
+    }
+
+    @media (max-width: 768px) {
+      .table-container {
+        overflow-x: auto;
+      }
+
+      table {
+        min-width: 900px;
+      }
+
+      .user-agent {
+        max-width: 200px;
+      }
+    }
+
+    /* 名單比對面板 */
+    .roster-panel {
+      background: white;
+      padding: 20px 25px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+    .roster-panel h3 { color: #333; margin-bottom: 8px; }
+    .roster-hint { color: #888; font-size: 13px; line-height: 1.5; margin-bottom: 12px; }
+    #rosterInput {
+      width: 100%; box-sizing: border-box; padding: 10px; border: 1px solid #ddd;
+      border-radius: 6px; font-family: inherit; font-size: 14px; resize: vertical;
+    }
+    .roster-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 10px; }
+    .roster-meta { color: #555; font-size: 14px; }
+    .roster-rate { font-size: 26px; font-weight: bold; color: #667eea; vertical-align: middle; }
+    .roster-result { margin-top: 15px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; }
+    .roster-col { border: 1px solid #eee; border-radius: 8px; padding: 12px; }
+    .roster-col h4 { font-size: 14px; margin-bottom: 8px; }
+    .roster-col.clicked h4 { color: #2e7d32; }
+    .roster-col.notclicked h4 { color: #c0392b; }
+    .roster-col.extra h4 { color: #e67e22; }
+    .roster-col ul { list-style: none; padding: 0; margin: 0; max-height: 260px; overflow-y: auto; }
+    .roster-col li { font-size: 13px; padding: 4px 0; border-bottom: 1px solid #f4f4f4; word-break: break-all; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🎯 社交工程測試管理後台</h1>
+      <p class="subtitle">監控和分析點擊行為</p>
+    </header>
+
+    <div class="stats">
+      <div class="stat-card">
+        <h3>總點擊次數</h3>
+        <div class="stat-value" id="totalClicks">0</div>
+      </div>
+      <div class="stat-card">
+        <h3>不重複用戶</h3>
+        <div class="stat-value" id="uniqueUsers">0</div>
+      </div>
+      <div class="stat-card">
+        <h3>最後點擊時間</h3>
+        <div class="stat-value" id="lastClick" style="font-size: 18px;">-</div>
+      </div>
+    </div>
+
+    <div class="roster-panel">
+      <h3>📋 名單比對（全體 <span id="rosterTotal">65</span> 人）</h3>
+      <p class="roster-hint">貼上參與演練的同仁名單，一行一位（建議用 LINE 顯示名稱）。系統會與下方點擊記錄比對，算出未點擊名單與點擊率。名單只存在你這台瀏覽器（localStorage），不會上傳。</p>
+      <textarea id="rosterInput" rows="5" placeholder="王小明&#10;陳大華&#10;林美玲&#10;..."></textarea>
+      <div class="roster-actions">
+        <button class="btn-primary" onclick="saveRoster()">💾 儲存並比對</button>
+        <button class="btn-primary" onclick="exportRosterCSV()">📥 匯出比對結果</button>
+        <span id="rosterMeta" class="roster-meta">尚未輸入名單</span>
+      </div>
+      <div id="rosterResult" class="roster-result"></div>
+    </div>
+
+    <div class="controls">
+      <button class="btn-primary" onclick="loadData()">🔄 重新整理</button>
+      <button class="btn-primary" onclick="exportData()">📥 匯出 CSV</button>
+      <button class="btn-warning" id="deleteSelectedBtn" onclick="deleteSelected()" disabled>🗑️ 刪除選中項目 (<span id="selectedCount">0</span>)</button>
+      <button class="btn-danger" onclick="clearData()">🗑️ 清除所有記錄</button>
+      <span class="selection-info" id="selectionInfo">未選擇任何項目</span>
+    </div>
+
+    <div class="table-container">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th class="checkbox-cell">
+                <input type="checkbox" id="selectAll" onchange="toggleSelectAll()">
+              </th>
+              <th>#</th>
+              <th>用戶 ID</th>
+              <th>顯示名稱</th>
+              <th>點擊時間</th>
+              <th>User Agent</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <tr>
+              <td colspan="6" class="loading">載入中...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = window.location.origin;
+    let allData = [];
+    let selectedIndices = new Set();
+
+    // ===== 名單比對（未點擊 = 65 人對比）=====
+    const ROSTER_KEY = 'drill_roster_2026';
+
+    function normalizeName(s) {
+      return (s || '').toString().replace(/\s+/g, '').toLowerCase();
+    }
+
+    // 純函式：名單 × 點擊記錄 → 已點擊 / 未點擊 / 不在名單
+    function matchRoster(rosterNames, clicks) {
+      const names = rosterNames.map(n => n.trim()).filter(Boolean);
+      const clickNames = [...new Set(clicks.map(c => c.displayName).filter(Boolean))];
+      const normClicks = clickNames.map(n => ({ raw: n, norm: normalizeName(n) }));
+      const clicked = [], notClicked = [];
+      const usedClicks = new Set();
+      for (const name of names) {
+        const nn = normalizeName(name);
+        const hit = nn && normClicks.find(c => c.norm === nn || c.norm.includes(nn) || nn.includes(c.norm));
+        if (hit) { clicked.push({ name, via: hit.raw }); usedClicks.add(hit.raw); }
+        else notClicked.push(name);
+      }
+      const extras = normClicks.filter(c => !usedClicks.has(c.raw)).map(c => c.raw);
+      return { clicked, notClicked, extras, total: names.length };
+    }
+
+    function getRoster() {
+      return (localStorage.getItem(ROSTER_KEY) || '').split('\n').map(s => s.trim()).filter(Boolean);
+    }
+
+    function saveRoster() {
+      localStorage.setItem(ROSTER_KEY, document.getElementById('rosterInput').value);
+      refreshRoster();
+    }
+
+    function escapeHtml(s) {
+      return (s || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    }
+
+    function refreshRoster() {
+      const roster = getRoster();
+      const meta = document.getElementById('rosterMeta');
+      const result = document.getElementById('rosterResult');
+      document.getElementById('rosterTotal').textContent = roster.length || 65;
+      if (roster.length === 0) {
+        meta.textContent = '尚未輸入名單';
+        result.innerHTML = '';
+        return;
+      }
+      const res = matchRoster(roster, allData);
+      const rate = res.total ? Math.round(res.clicked.length / res.total * 100) : 0;
+      meta.innerHTML = `點擊率 <span class="roster-rate">${rate}%</span>　已點擊 ${res.clicked.length} / 共 ${res.total} 人`;
+      const col = (cls, title, items) =>
+        `<div class="roster-col ${cls}"><h4>${title}</h4><ul>${items.length ? items.join('') : '<li>—</li>'}</ul></div>`;
+      result.innerHTML =
+        col('notclicked', `⬜ 未點擊（${res.notClicked.length}）`, res.notClicked.map(n => `<li>${escapeHtml(n)}</li>`)) +
+        col('clicked', `✅ 已點擊（${res.clicked.length}）`, res.clicked.map(c => `<li>${escapeHtml(c.name)} <span style="color:#aaa">← ${escapeHtml(c.via)}</span></li>`)) +
+        col('extra', `⚠️ 有點擊但不在名單（${res.extras.length}）`, res.extras.map(n => `<li>${escapeHtml(n)}</li>`));
+    }
+
+    function exportRosterCSV() {
+      const roster = getRoster();
+      if (roster.length === 0) { alert('請先輸入名單'); return; }
+      const res = matchRoster(roster, allData);
+      const rows = [['姓名', '狀態', '對應點擊顯示名稱']];
+      res.clicked.forEach(c => rows.push([c.name, '已點擊', c.via]));
+      res.notClicked.forEach(n => rows.push([n, '未點擊', '']));
+      res.extras.forEach(n => rows.push([n, '有點擊但不在名單', n]));
+      const csv = rows.map(r => r.map(c => `"${(c || '').toString().replace(/"/g, '""')}"`).join(',')).join('\n');
+      downloadCSV(csv, 'roster-comparison.csv');
+    }
+
+    // 還原已存名單 + 自我檢測（壞掉會在 console 報錯）
+    (function initRoster() {
+      const saved = localStorage.getItem(ROSTER_KEY);
+      if (saved) document.getElementById('rosterInput').value = saved;
+      const t = matchRoster(['王小明', '陳大華', '林沒點'], [{ displayName: '王小明' }, { displayName: '陳大華 Daniel' }]);
+      console.assert(t.clicked.length === 2 && t.notClicked.length === 1 && t.notClicked[0] === '林沒點' && t.extras.length === 0, '名單比對自我檢測失敗', t);
+    })();
+
+    async function loadData() {
+      try {
+        // 載入統計資料
+        const statsResponse = await fetch(`${API_URL}/api/stats`);
+        const statsResult = await statsResponse.json();
+
+        if (statsResult.success) {
+          document.getElementById('totalClicks').textContent = statsResult.stats.totalClicks;
+          document.getElementById('uniqueUsers').textContent = statsResult.stats.uniqueUsers;
+          document.getElementById('lastClick').textContent = statsResult.stats.lastClick || '-';
+        }
+
+        // 載入點擊記錄
+        const clicksResponse = await fetch(`${API_URL}/api/clicks`);
+        const clicksResult = await clicksResponse.json();
+
+        if (clicksResult.success) {
+          allData = clicksResult.data;
+          selectedIndices.clear();
+          renderTable(allData);
+          updateSelectionUI();
+          refreshRoster();
+        }
+      } catch (error) {
+        console.error('載入錯誤:', error);
+        document.getElementById('tableBody').innerHTML = `
+          <tr>
+            <td colspan="6" class="no-data">載入失敗，請稍後再試</td>
+          </tr>
+        `;
+      }
+    }
+
+    function renderTable(data) {
+      const tbody = document.getElementById('tableBody');
+
+      if (data.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="no-data">目前沒有點擊記錄</td>
+          </tr>
+        `;
+        return;
+      }
+
+      const reversedData = [...data].reverse();
+      tbody.innerHTML = reversedData.map((item, index) => {
+        const originalIndex = data.length - 1 - index;
+        const isChecked = selectedIndices.has(originalIndex);
+        return `
+        <tr>
+          <td class="checkbox-cell">
+            <input type="checkbox" class="row-checkbox" data-index="${originalIndex}"
+                   ${isChecked ? 'checked' : ''} onchange="toggleRowSelection(${originalIndex})">
+          </td>
+          <td>${index + 1}</td>
+          <td>
+            ${item.pictureUrl ? `<img src="${item.pictureUrl}" class="user-avatar" alt="avatar">` : ''}
+            <div class="user-id" title="${item.userId}">${item.userId}</div>
+          </td>
+          <td class="display-name">${item.displayName}</td>
+          <td class="timestamp">${item.clickTime}</td>
+          <td><div class="user-agent" title="${item.userAgent}">${item.userAgent}</div></td>
+        </tr>
+      `}).join('');
+    }
+
+    function toggleSelectAll() {
+      const selectAllCheckbox = document.getElementById('selectAll');
+      const isChecked = selectAllCheckbox.checked;
+
+      if (isChecked) {
+        // 全選
+        selectedIndices.clear();
+        for (let i = 0; i < allData.length; i++) {
+          selectedIndices.add(i);
+        }
+      } else {
+        // 取消全選
+        selectedIndices.clear();
+      }
+
+      renderTable(allData);
+      updateSelectionUI();
+    }
+
+    function toggleRowSelection(index) {
+      if (selectedIndices.has(index)) {
+        selectedIndices.delete(index);
+      } else {
+        selectedIndices.add(index);
+      }
+
+      updateSelectionUI();
+      updateSelectAllCheckbox();
+    }
+
+    function updateSelectAllCheckbox() {
+      const selectAllCheckbox = document.getElementById('selectAll');
+      if (selectedIndices.size === 0) {
+        selectAllCheckbox.checked = false;
+        selectAllCheckbox.indeterminate = false;
+      } else if (selectedIndices.size === allData.length) {
+        selectAllCheckbox.checked = true;
+        selectAllCheckbox.indeterminate = false;
+      } else {
+        selectAllCheckbox.checked = false;
+        selectAllCheckbox.indeterminate = true;
+      }
+    }
+
+    function updateSelectionUI() {
+      const count = selectedIndices.size;
+      document.getElementById('selectedCount').textContent = count;
+      document.getElementById('deleteSelectedBtn').disabled = count === 0;
+
+      if (count === 0) {
+        document.getElementById('selectionInfo').textContent = '未選擇任何項目';
+      } else {
+        document.getElementById('selectionInfo').textContent = `已選擇 ${count} 個項目`;
+      }
+
+      updateSelectAllCheckbox();
+    }
+
+    async function deleteSelected() {
+      const count = selectedIndices.size;
+      if (count === 0) {
+        alert('請先選擇要刪除的項目');
+        return;
+      }
+
+      if (!confirm(`確定要刪除選中的 ${count} 個項目嗎？此操作無法復原！`)) {
+        return;
+      }
+
+      try {
+        // 收集要刪除的項目的 ID
+        const deleteIds = [];
+        selectedIndices.forEach(index => {
+          if (allData[index] && allData[index]._id) {
+            deleteIds.push(allData[index]._id);
+          }
+        });
+
+        // 傳送到後端
+        const response = await fetch(`${API_URL}/api/clicks/bulk-delete`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ deleteIds })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          alert(`已成功刪除 ${count} 個項目`);
+          selectedIndices.clear();
+          loadData();
+        } else {
+          alert('刪除失敗，請稍後再試');
+        }
+      } catch (error) {
+        console.error('刪除錯誤:', error);
+        alert('刪除失敗，請稍後再試');
+      }
+    }
+
+    async function clearData() {
+      if (!confirm('確定要清除所有記錄嗎？此操作無法復原！')) {
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_URL}/api/clicks`, {
+          method: 'DELETE'
+        });
+        const result = await response.json();
+
+        if (result.success) {
+          alert('已清除所有記錄');
+          selectedIndices.clear();
+          loadData();
+        }
+      } catch (error) {
+        console.error('清除錯誤:', error);
+        alert('清除失敗，請稍後再試');
+      }
+    }
+
+    function exportData() {
+      fetch(`${API_URL}/api/clicks`)
+        .then(response => response.json())
+        .then(result => {
+          if (result.success && result.data.length > 0) {
+            const csv = convertToCSV(result.data);
+            downloadCSV(csv, 'social-engineering-clicks.csv');
+          } else {
+            alert('沒有資料可以匯出');
+          }
+        })
+        .catch(error => {
+          console.error('匯出錯誤:', error);
+          alert('匯出失敗');
+        });
+    }
+
+    function convertToCSV(data) {
+      const headers = ['編號', '用戶ID', '顯示名稱', '點擊時間', 'User Agent'];
+      const rows = data.map((item, index) => [
+        index + 1,
+        item.userId,
+        item.displayName,
+        item.clickTime,
+        item.userAgent
+      ]);
+
+      return [
+        headers.join(','),
+        ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+      ].join('\n');
+    }
+
+    function downloadCSV(csv, filename) {
+      const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+
+      link.setAttribute('href', url);
+      link.setAttribute('download', filename);
+      link.style.visibility = 'hidden';
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // 頁面載入時自動載入資料
+    loadData();
+
+    // 每30秒自動重新整理
+    setInterval(loadData, 30000);
+  </script>
+</body>
+</html>
