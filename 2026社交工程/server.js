@@ -40,6 +40,19 @@ function taipeiNow() {
   return new Date().toLocaleString("zh-TW", { timeZone: "Asia/Taipei" });
 }
 
+// 管理員驗證：保護後台讀取/刪除端點；/api/track 保持公開，同仁點擊才記得到
+function requireAdmin(req, res, next) {
+  if (!process.env.ADMIN_TOKEN) {
+    return res
+      .status(401)
+      .json({ success: false, message: "後台尚未設定 ADMIN_TOKEN" });
+  }
+  if (req.headers["x-admin-token"] !== process.env.ADMIN_TOKEN) {
+    return res.status(401).json({ success: false, message: "密碼錯誤" });
+  }
+  next();
+}
+
 // API: 記錄點擊
 app.post("/api/track", async (req, res) => {
   try {
@@ -57,7 +70,7 @@ app.post("/api/track", async (req, res) => {
 });
 
 // API: 獲取所有點擊記錄（欄位別名對齊前端，admin.html 不用改）
-app.get("/api/clicks", async (req, res) => {
+app.get("/api/clicks", requireAdmin, async (req, res) => {
   try {
     await ensureSchema();
     const data = await sql`
@@ -75,7 +88,7 @@ app.get("/api/clicks", async (req, res) => {
 });
 
 // API: 清除所有記錄
-app.delete("/api/clicks", async (req, res) => {
+app.delete("/api/clicks", requireAdmin, async (req, res) => {
   try {
     await ensureSchema();
     await sql`DELETE FROM clicks`;
@@ -87,7 +100,7 @@ app.delete("/api/clicks", async (req, res) => {
 });
 
 // API: 批量刪除記錄
-app.post("/api/clicks/bulk-delete", async (req, res) => {
+app.post("/api/clicks/bulk-delete", requireAdmin, async (req, res) => {
   try {
     await ensureSchema();
     const { deleteIds } = req.body;
@@ -106,7 +119,7 @@ app.post("/api/clicks/bulk-delete", async (req, res) => {
 });
 
 // API: 獲取統計資訊
-app.get("/api/stats", async (req, res) => {
+app.get("/api/stats", requireAdmin, async (req, res) => {
   try {
     await ensureSchema();
     const rows = await sql`

@@ -306,6 +306,7 @@
       <button class="btn-primary" onclick="exportData()">📥 匯出 CSV</button>
       <button class="btn-warning" id="deleteSelectedBtn" onclick="deleteSelected()" disabled>🗑️ 刪除選中項目 (<span id="selectedCount">0</span>)</button>
       <button class="btn-danger" onclick="clearData()">🗑️ 清除所有記錄</button>
+      <button class="btn-primary" onclick="logout()">🔒 登出</button>
       <span class="selection-info" id="selectionInfo">未選擇任何項目</span>
     </div>
 
@@ -338,6 +339,33 @@
     const API_URL = window.location.origin;
     let allData = [];
     let selectedIndices = new Set();
+
+    // ===== 管理員密碼（保護後台，避免同仁看到誰點了）=====
+    const TOKEN_KEY = 'admin_token';
+    let ADMIN_TOKEN = localStorage.getItem(TOKEN_KEY) || '';
+    function ensureToken() {
+      if (!ADMIN_TOKEN) {
+        ADMIN_TOKEN = (prompt('請輸入管理員密碼：') || '').trim();
+        if (ADMIN_TOKEN) localStorage.setItem(TOKEN_KEY, ADMIN_TOKEN);
+      }
+      return ADMIN_TOKEN;
+    }
+    function authHeaders(extra) {
+      return Object.assign({ 'x-admin-token': ADMIN_TOKEN }, extra || {});
+    }
+    function authFailed(resp) {
+      if (resp.status === 401) {
+        localStorage.removeItem(TOKEN_KEY);
+        ADMIN_TOKEN = '';
+        return true;
+      }
+      return false;
+    }
+    function logout() {
+      localStorage.removeItem(TOKEN_KEY);
+      ADMIN_TOKEN = '';
+      location.reload();
+    }
 
     // ===== 名單比對（未點擊 = 65 人對比）=====
     const ROSTER_KEY = 'drill_roster_2026';
@@ -418,9 +446,11 @@
     })();
 
     async function loadData() {
+      if (!ensureToken()) return;
       try {
         // 載入統計資料
-        const statsResponse = await fetch(`${API_URL}/api/stats`);
+        const statsResponse = await fetch(`${API_URL}/api/stats`, { headers: authHeaders() });
+        if (authFailed(statsResponse)) { alert('密碼錯誤或後台未設定密碼，請重新輸入'); return loadData(); }
         const statsResult = await statsResponse.json();
 
         if (statsResult.success) {
@@ -430,7 +460,8 @@
         }
 
         // 載入點擊記錄
-        const clicksResponse = await fetch(`${API_URL}/api/clicks`);
+        const clicksResponse = await fetch(`${API_URL}/api/clicks`, { headers: authHeaders() });
+        if (authFailed(clicksResponse)) { alert('密碼錯誤或後台未設定密碼，請重新輸入'); return loadData(); }
         const clicksResult = await clicksResponse.json();
 
         if (clicksResult.success) {
@@ -565,11 +596,10 @@
         // 傳送到後端
         const response = await fetch(`${API_URL}/api/clicks/bulk-delete`, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: authHeaders({ 'Content-Type': 'application/json' }),
           body: JSON.stringify({ deleteIds })
         });
+        if (authFailed(response)) { alert('密碼失效，請重新整理後重試'); return; }
 
         const result = await response.json();
 
@@ -593,8 +623,10 @@
 
       try {
         const response = await fetch(`${API_URL}/api/clicks`, {
-          method: 'DELETE'
+          method: 'DELETE',
+          headers: authHeaders()
         });
+        if (authFailed(response)) { alert('密碼失效，請重新整理後重試'); return; }
         const result = await response.json();
 
         if (result.success) {
@@ -609,8 +641,8 @@
     }
 
     function exportData() {
-      fetch(`${API_URL}/api/clicks`)
-        .then(response => response.json())
+      fetch(`${API_URL}/api/clicks`, { headers: authHeaders() })
+        .then(response => { if (authFailed(response)) { alert('密碼失效，請重新整理'); throw new Error('unauthorized'); } return response.json(); })
         .then(result => {
           if (result.success && result.data.length > 0) {
             const csv = convertToCSV(result.data);
