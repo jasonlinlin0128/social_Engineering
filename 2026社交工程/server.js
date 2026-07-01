@@ -69,6 +69,16 @@ app.post("/api/track", async (req, res) => {
   }
 });
 
+// LINE webhook：一次性擷取群組 groupId（把 OA 加進群、在群裡發一則訊息，這裡會 log 出 source）
+// ponytail: 未驗證 X-Line-Signature，只為抓 groupId 的臨時用途；長期當正式 bot 再補簽章驗證
+app.post("/api/line-webhook", (req, res) => {
+  const events = (req.body && req.body.events) || [];
+  events.forEach((e) =>
+    console.log("LINE_WEBHOOK_SOURCE:", JSON.stringify(e.source || {})),
+  );
+  res.status(200).end();
+});
+
 // API: 獲取所有點擊記錄（欄位別名對齊前端，admin.html 不用改）
 app.get("/api/clicks", requireAdmin, async (req, res) => {
   try {
